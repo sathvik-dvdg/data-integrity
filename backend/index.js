@@ -7,6 +7,7 @@ const connectDB = require("./config/db");
 const { getLatestBlock } = require("./services/blockchain");
 const VerificationLog = require("./models/VerificationLog");
 const { ethers } = require("ethers");
+
 const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_URL);
 const app = express();
 
@@ -53,14 +54,15 @@ app.get("/verify/:blockNumber", async (req, res) => {
   try {
     const rawParam = req.params.blockNumber;
     let blockNumber;
-    
+
     if (rawParam.toLowerCase() === "latest") {
       blockNumber = "latest";
     } else {
-      blockNumber = parseInt(rawParam);
-      if (isNaN(blockNumber)) {
-        return res.status(400).json({ error: "Invalid block number provided" });
+      // Strict numeric validation
+      if (!/^\d+$/.test(rawParam)) {
+        return res.status(400).json({ error: "Invalid block number format. Please provide a positive integer." });
       }
+      blockNumber = parseInt(rawParam, 10);
     }
 
     console.log("⏳ Verifying block:", blockNumber);
@@ -96,6 +98,17 @@ app.get("/verify/:blockNumber", async (req, res) => {
     console.error("❌ Error:", err.message);
     res.status(500).json({ error: err.message });
   }
+});
+
+// 404 Handler
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found" });
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error("🔥 Global Error:", err.stack);
+  res.status(500).json({ error: "Internal Server Error", details: err.message });
 });
 
 // 🔥 Server start
