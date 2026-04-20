@@ -13,11 +13,8 @@ requiredEnv.forEach((env) => {
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
-const { getLatestBlock } = require("./services/blockchain");
-const VerificationLog = require("./models/VerificationLog");
-const { ethers } = require("ethers");
+const verifyRoutes = require("./routes/verifyRoutes");
 
-const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_URL);
 const app = express();
 
 // 🔥 Middleware - MUST BE FIRST
@@ -27,77 +24,18 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors());
+// 🛡️ Restricted CORS Origin
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:3000"
+}));
+
 app.use(express.json());
 
 // 🔥 Connect to MongoDB
 connectDB();
 
 // 🔥 Routes
-
-// Home route
-app.get("/", (req, res) => {
-  res.send("API Running");
-});
-
-// Blockchain test route
-app.get("/block/latest", async (req, res, next) => {
-  try {
-    console.log("⏳ Fetching block from blockchain...");
-    const block = await getLatestBlock();
-    console.log("✅ Block fetched:", block.number);
-    res.json(block);
-  } catch (err) {
-    next(err); // Pass error to global handler
-  }
-});
-
-app.get("/verify/:blockNumber", async (req, res, next) => {
-  try {
-    const rawParam = req.params.blockNumber;
-    let blockNumber;
-
-    if (rawParam.toLowerCase() === "latest") {
-      blockNumber = "latest";
-    } else {
-      // Strict numeric validation
-      if (!/^\d+$/.test(rawParam)) {
-        return res.status(400).json({ error: "Invalid block number format. Please provide a positive integer." });
-      }
-      // Use BigInt for block numbers to prevent overflow (future-proofing)
-      blockNumber = BigInt(rawParam);
-    }
-
-    console.log("⏳ Verifying block:", blockNumber.toString());
-
-    const block = await provider.getBlock(blockNumber);
-
-    if (!block) {
-      return res.status(404).json({ error: "Block not found on the blockchain." });
-    }
-
-    const originalHash = block.hash;
-    const recomputedHash = block.hash; // Simulation placeholder
-    const status = originalHash === recomputedHash ? "MATCH" : "MISMATCH";
-
-    // 💾 Save to DB
-    const log = await VerificationLog.create({
-      blockNumber: blockNumber.toString(), // Store as string for consistency
-      blockHash: originalHash,
-      status,
-    });
-
-    console.log("✅ Stored in DB");
-
-    res.json({
-      message: "Verification complete",
-      data: log,
-    });
-
-  } catch (err) {
-    next(err); // Pass to global handler
-  }
-});
+app.use("/", verifyRoutes);
 
 // 404 Handler
 app.use((req, res) => {
@@ -108,16 +46,23 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error("🔥 Global Error:", err.stack);
   
+  // Use the status code from the error if provided, otherwise 500
+  const status = err.status || 500;
+  
   const response = {
-    error: "Internal Server Error"
+    error: err.status ? "Request Error" : "Internal Server Error",
+    message: err.message
   };
 
-  // Only expose error details in development
-  if (process.env.NODE_ENV === "development") {
-    response.details = err.message;
+  // Mask internal details if NOT in development
+  if (process.env.NODE_ENV !== "development") {
+    response.message = err.status ? err.message : "An unexpected error occurred.";
+    delete response.details;
+  } else {
+    response.details = err.stack;
   }
 
-  res.status(500).json(response);
+  res.status(status).json(response);
 });
 
 // 🔥 Server start
@@ -125,4 +70,5 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  console.log(`🔗 Allowed CORS Origin: ${process.env.FRONTEND_URL || "http://localhost:3000"}`);
 });
