@@ -49,9 +49,27 @@ const Dashboard = () => {
     setIsVerifying(true);
     setErrorToast(null);
     try {
-      const result = await verifyBlock(blockNumber);
-      // Re-fetch data to get the updated logs and stats
-      await fetchDashboardData(false);
+      const { data: newLog } = await verifyBlock(blockNumber);
+      
+      // 🚀 Optimistic/Local State Update
+      setLogs(prev => {
+        // Prevent duplicates if by some chance it was already loaded
+        const filtered = prev.filter(l => l.blockNumber !== newLog.blockNumber);
+        return [newLog, ...filtered].slice(0, 100); 
+      });
+
+      setStats(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          total: prev.total + 1,
+          matchCount: newLog.status === "MATCH" ? prev.matchCount + 1 : prev.matchCount,
+          mismatchCount: newLog.status === "MISMATCH" ? prev.mismatchCount + 1 : prev.mismatchCount,
+          latestBlock: newLog.blockNumber,
+          latestCheckedAt: newLog.checkedAt
+        };
+      });
+
     } catch (error) {
       setErrorToast(error.message || "Failed to verify block. Please try again.");
       setTimeout(() => setErrorToast(null), 5000);

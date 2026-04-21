@@ -54,22 +54,19 @@ app.use((err, req, res, next) => {
   const status = err.status || 500;
   
   const response = {
-    error: err.status ? "Request Error" : "Internal Server Error",
-    message: err.message
+    error: status >= 500 ? "Internal Server Error" : "Request Error",
+    message: "An unexpected error occurred." // Default safe message
   };
 
-  // 🛡️ Security: NEVER send err.stack to the client.
-  // Even in development, keep frontend responses clean to prevent leaking file paths.
-  if (process.env.NODE_ENV !== "development") {
-    // In production, mask the message if it's not a deliberate error Status
-    if (!err.status) {
-      response.message = "An unexpected error occurred.";
-    }
+  // 🛡️ Security: Leak prevention
+  if (process.env.NODE_ENV === "development") {
+    response.message = err.message;
+    response.stack = err.stack;
   } else {
-    // Optionally: if we don't want to leak internal info during manual hacking/spamming
-    // we can still suppress non-controlled error messages
-    if (!err.status) {
-       response.message = "An internal server error occurred.";
+    // Whitelist specific "Safe" error messages even in production
+    const safeMessages = ["Block not found", "Route not found", "Blockchain service is temporarily unavailable"];
+    if (safeMessages.some(m => err.message?.includes(m))) {
+      response.message = err.message;
     }
   }
 

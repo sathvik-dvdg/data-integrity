@@ -79,7 +79,7 @@ const verifyBlock = async (req, res, next) => {
 
     res.json({
       message: "Verification complete",
-      data: serializeBigInts(log._doc || log),
+      data: serializeBigInts(log.toObject()),
     });
 
   } catch (err) {

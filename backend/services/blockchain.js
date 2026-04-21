@@ -51,25 +51,27 @@ async function getBlock(blockTag) {
  * @param {Error} err 
  */
 function handleRPCError(err) {
-  const safeMessage = err.message ? err.message.replace(process.env.ALCHEMY_URL || "REST_API", "*****") : "Unknown RPC Error";
+  // Extract just the core message
+  const originalMessage = err.message || "Unknown RPC Error";
+  const safeMessage = originalMessage.replace(process.env.ALCHEMY_URL || "REST_API", "*****");
+  
   console.error("🌐 Blockchain RPC Error:", safeMessage);
 
+  let status = 502;
+  let finalMessage = "Failed to communicate with Blockchain provider.";
+
   if (safeMessage.includes("429") || safeMessage.toLowerCase().includes("rate limit")) {
-    const error = new Error("Blockchain RPC rate limit exceeded. Please try again later.");
-    error.status = 429;
-    throw error;
+    finalMessage = "Blockchain RPC rate limit exceeded. Please try again later.";
+    status = 429;
+  } else if (safeMessage.includes("503") || safeMessage.toLowerCase().includes("timeout")) {
+    finalMessage = "Blockchain service is temporarily unavailable.";
+    status = 503;
   }
 
-  if (safeMessage.includes("503") || safeMessage.toLowerCase().includes("timeout")) {
-    const error = new Error("Blockchain service is temporarily unavailable.");
-    error.status = 503;
-    throw error;
-  }
-
-  // Generic fallback sanitize
-  const genericError = new Error("Failed to communicate with Blockchain provider.");
-  genericError.status = 502;
-  throw genericError;
+  // 🛡️ Security: Throw a fresh error object to strip any attached fields like err.config.url
+  const cleanError = new Error(finalMessage);
+  cleanError.status = status;
+  throw cleanError;
 }
 
 module.exports = { 

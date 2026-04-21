@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const verificationSchema = new mongoose.Schema({
     blockNumber: {
-        type: Number,
+        type: String,
         required: true,
         unique: true,
     },
@@ -14,6 +14,7 @@ const verificationSchema = new mongoose.Schema({
         type: String,
         enum: ["MATCH", "MISMATCH"],
         required: true,
+        index: true,
     },
     isMock: {
         type: Boolean,
@@ -22,6 +23,7 @@ const verificationSchema = new mongoose.Schema({
     checkedAt: {
         type: Date,
         default: Date.now,
+        index: true,
     },
 });
 
