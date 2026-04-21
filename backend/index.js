@@ -10,24 +10,30 @@ requiredEnv.forEach((env) => {
   }
 });
 
-/**
- * ⚡ Global Patch: BigInt Serialization
- * Standard libraries (like Ethers.js) return BigInts, which JSON.stringify does not support by default.
- * This patch ensures all BigInts are serialized as strings in API responses.
- */
-BigInt.prototype.toJSON = function () {
-  return this.toString();
-};
-
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const connectDB = require("./config/db");
 const verifyRoutes = require("./routes/verifyRoutes");
 
 const app = express();
 
-// 🔥 Middleware - MUST BE FIRST
+/**
+ * 🛡️ Global Security: Base Rate Limiter
+ * Provides a baseline protection against brute-force/DoS for all endpoints (including 404s).
+ * More restrictive limits are applied per-router.
+ */
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 mins
+  max: 500, // 500 requests per 15 min per IP
+  message: { error: "Too many requests. Please try again later." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(globalLimiter);
+
+// 🔥 Middleware
 app.use((req, res, next) => {
   const timestamp = new Date().toLocaleTimeString();
   console.log(`[${timestamp}] ➡️  ${req.method} ${req.url}`);

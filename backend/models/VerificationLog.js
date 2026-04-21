@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 
 const verificationSchema = new mongoose.Schema({
     blockNumber: {
-        type: String,
+        type: Number,
         required: true,
         unique: true,
+        index: true,
     },
     blockHash: {
         type: String,

@@ -17,11 +17,11 @@ const limiter = rateLimit({
 // 🛡️ Apply rate limiter to ALL routes in this router
 router.use(limiter);
 
-// GET /logs - Fetch all verification logs
-router.get("/logs", verificationController.getLogs);
+// GET /summary - Consolidated dashboard data (stats + recent logs)
+router.get("/summary", verificationController.getDashboardSummary);
 
-// GET /stats - Dashboard aggregated stats
-router.get("/stats", verificationController.getStats);
+// GET /logs - Fetch all verification logs (paginated)
+router.get("/logs", verificationController.getLogs);
 
 // GET /block/latest
 router.get("/block/latest", verificationController.getLatest);

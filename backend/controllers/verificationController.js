@@ -7,11 +7,76 @@ const VerificationLog = require("../models/VerificationLog");
 const MAX_BLOCK_DIGITS = 15;
 
 /**
+ * Local Helper: BigInt Serialization
+ * Converts objects with BigInts into string versions before JSON response.
+ */
+const sanitizeData = (data) => {
+  return JSON.parse(JSON.stringify(data, (key, value) =>
+    typeof value === 'bigint' ? value.toString() : value
+  ));
+};
+
+/**
+ * Combined Dashboard Summary
+ * Performance: Fetches counts, recent logs, and latest block in a single optimized pass.
+ */
+const getDashboardSummary = async (req, res, next) => {
+  try {
+    const [summaryResult, latestBlockchainBlock] = await Promise.all([
+      // Aggregation handles multiple counts (stats) and recent logs in one $facet call
+      VerificationLog.aggregate([
+        {
+          $facet: {
+            stats: [
+              {
+                $group: {
+                  _id: null,
+                  total: { $sum: 1 },
+                  matchCount: { $sum: { $cond: [{ $eq: ["$status", "MATCH"] }, 1, 0] } },
+                  mismatchCount: { $sum: { $cond: [{ $eq: ["$status", "MISMATCH"] }, 1, 0] } }
+                }
+              }
+            ],
+            recentLogs: [
+              { $sort: { checkedAt: -1 } },
+              { $limit: 10 }
+            ]
+          }
+        }
+      ]),
+      blockchainService.getLatestBlock()
+    ]);
+
+    const facetData = summaryResult[0];
+    const stats = facetData.stats[0] || { total: 0, matchCount: 0, mismatchCount: 0 };
+    const latestVerified = facetData.recentLogs[0] || null;
+
+    res.json(sanitizeData({
+      stats: {
+        total: stats.total,
+        matchCount: stats.matchCount,
+        mismatchCount: stats.mismatchCount,
+        latestVerifiedBlock: latestVerified ? latestVerified.blockNumber : null,
+        latestCheckedAt: latestVerified ? latestVerified.checkedAt : null,
+      },
+      recentLogs: facetData.recentLogs,
+      latestBlockchainBlock: {
+        number: latestBlockchainBlock.number,
+        hash: latestBlockchainBlock.hash
+      }
+    }));
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
  * Controller for block verification logic
  */
 const verifyBlock = async (req, res, next) => {
   try {
     const rawParam = req.params.blockNumber;
+    const force = req.query.force === "true"; // Forensic support: re-verify existing records
     let blockTag;
 
     // 🛡️ Input Validation
@@ -27,49 +92,58 @@ const verifyBlock = async (req, res, next) => {
       blockTag = BigInt(rawParam);
     }
 
-    // 🏎️ Perform blockchain fetch first to get the actual block number
+    // 🏎️ Fetch block first
     const block = await blockchainService.getBlock(blockTag);
 
     if (!block) {
       return res.status(404).json({ error: "Block not found on the blockchain." });
     }
 
-    const actualBlockNumber = block.number.toString();
+    const actualBlockNumber = Number(block.number);
 
-    // 🏁 Check Existence FIRST to avoid 11000 noisy errors in logs
-    // Performance: This uses the unique index on blockNumber
-    const existingLog = await VerificationLog.findOne({ blockNumber: actualBlockNumber });
-    if (existingLog) {
-      console.log(`ℹ️ Returning cached verification for block ${actualBlockNumber}`);
-      return res.json({
-        message: "Verification complete (Cached)",
-        data: existingLog.toObject(),
-      });
+    // 🏁 Forensics Check: Allow re-verification if force parameter is present
+    if (!force) {
+      const existingLog = await VerificationLog.findOne({ blockNumber: actualBlockNumber });
+      if (existingLog) {
+        console.log(`ℹ️ Returning cached verification for block ${actualBlockNumber}`);
+        return res.json(sanitizeData({
+          message: "Verification complete (Cached)",
+          data: existingLog,
+        }));
+      }
     }
 
-    console.log(`⏳ Verifying block: ${actualBlockNumber}`);
+    console.log(`⏳ Verifying block: ${actualBlockNumber} (Force: ${force})`);
     const originalHash = block.hash;
     
-    // MOCK: Simulation of hash computation mismatch based on 5% probability
-    const isMismatch = Math.random() < 0.05;
+    /**
+     * 🛡️ Tampering Simulation: Moved to Feature Flag
+     * Defaults to true in dev for demo purposes.
+     */
+    const simulateTampering = process.env.SIMULATE_TAMPERING === 'true';
+    const isMismatch = simulateTampering && (Math.random() < 0.05);
     const recomputedHash = isMismatch ? "0x" + "0".repeat(64) : block.hash; 
 
     const status = originalHash === recomputedHash ? "MATCH" : "MISMATCH";
 
-    // 💾 Save to DB
-    const log = await VerificationLog.create({
-      blockNumber: actualBlockNumber,
-      blockHash: originalHash,
-      status,
-      isMock: true
-    });
+    // 💾 Upsert to DB (handles both new and re-verifications)
+    const log = await VerificationLog.findOneAndUpdate(
+      { blockNumber: actualBlockNumber },
+      {
+        blockHash: originalHash,
+        status,
+        isMock: isMismatch,
+        checkedAt: new Date()
+      },
+      { upsert: true, new: true }
+    );
     
-    console.log(`✅ Verification stored in DB for block ${actualBlockNumber}`);
+    console.log(`✅ Verification updated for block ${actualBlockNumber} [${status}]`);
 
-    res.json({
-      message: "Verification complete",
-      data: log.toObject(),
-    });
+    res.json(sanitizeData({
+      message: force ? "Re-verification complete (Forced)" : "Verification complete",
+      data: log,
+    }));
 
   } catch (err) {
     next(err);
@@ -82,7 +156,7 @@ const verifyBlock = async (req, res, next) => {
 const getLatest = async (req, res, next) => {
   try {
     const block = await blockchainService.getLatestBlock();
-    res.json(block); 
+    res.json(sanitizeData(block)); 
   } catch (err) {
     next(err);
   }
@@ -102,39 +176,12 @@ const getLogs = async (req, res, next) => {
       VerificationLog.countDocuments()
     ]);
 
-    res.json({ 
+    res.json(sanitizeData({ 
       data: logs,
       page,
       limit,
       total
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-/**
- * Get aggregated stats for the dashboard
- * Performance: Replaced $group (O(N) scan) with countDocuments (O(1) with status index)
- */
-const getStats = async (req, res, next) => {
-  try {
-    const [total, matchCount, mismatchCount, latest] = await Promise.all([
-      VerificationLog.countDocuments(),
-      VerificationLog.countDocuments({ status: "MATCH" }),
-      VerificationLog.countDocuments({ status: "MISMATCH" }),
-      VerificationLog.findOne().sort({ checkedAt: -1 }).select("blockNumber checkedAt")
-    ]);
-
-    res.json({
-      data: {
-        total,
-        matchCount,
-        mismatchCount,
-        latestBlock: latest ? latest.blockNumber : null,
-        latestCheckedAt: latest ? latest.checkedAt : null,
-      }
-    });
+    }));
   } catch (err) {
     next(err);
   }
@@ -144,5 +191,5 @@ module.exports = {
   verifyBlock,
   getLatest,
   getLogs,
-  getStats,
+  getDashboardSummary,
 };

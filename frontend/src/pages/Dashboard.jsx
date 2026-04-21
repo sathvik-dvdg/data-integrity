@@ -18,19 +18,23 @@ const Dashboard = () => {
   const fetchDashboardData = useCallback(async (showRefreshIndicator = false, signal = null) => {
     if (showRefreshIndicator) setIsRefreshing(true);
     try {
-      const [logsRes, statsRes, latestRes] = await Promise.all([
-        getLogs(signal),
-        getStats(signal),
-        getLatestBlock(signal)
-      ]);
+      const response = await getDashboardSummary(signal);
       
-      if (logsRes?.data) setLogs(logsRes.data);
-      if (statsRes?.data) setStats(statsRes.data);
-      if (latestRes) setIsConnected(true);
+      if (response?.data) {
+        const { stats, recentLogs, latestBlockchainBlock } = response.data;
+        setLogs(recentLogs || []);
+        setStats(stats || { total: 0, matchCount: 0, mismatchCount: 0 });
+        setIsConnected(!!latestBlockchainBlock);
+      }
     } catch (error) {
       if (error.name === 'CanceledError' || error.name === 'AbortError') return;
+      
       console.error("Dashboard fetch error:", error);
       setIsConnected(false);
+      
+      // Robust error rendering
+      const msg = error.response?.data?.message || error.message || "Failed to fetch dashboard data";
+      setErrorToast(typeof msg === 'string' ? msg : "An unexpected data error occurred");
     } finally {
       setIsRefreshing(false);
     }
@@ -43,7 +47,7 @@ const Dashboard = () => {
     return () => controller.abort();
   }, [fetchDashboardData]);
 
-  // Auto-refresh every 5 seconds
+  // Auto-refresh every 5 seconds (Reduced from 3 requests to 1)
   usePolling((signal) => {
     fetchDashboardData(false, signal);
   }, 5000);

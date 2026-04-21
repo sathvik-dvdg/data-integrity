@@ -51,12 +51,19 @@ async function getBlock(blockTag) {
  * @param {Error} err 
  */
 function handleRPCError(err) {
-  // 🛡️ Security: Explicitly avoid logging the raw error object which contains sensitive URL data
-  // Extract info safely
+  // 🛡️ Security: Surgical Scrubbing
+  // Explicitly remove sensitive properties that Ethers/Axios might attach
+  const sensitiveProps = ['config', 'request', 'url', 'response'];
+  sensitiveProps.forEach(prop => {
+    if (err[prop]) {
+      try { delete err[prop]; } catch (e) { err[prop] = undefined; }
+    }
+  });
+
+  const errorCode = err.code || "UNKNOWN_RPC_ERROR";
   const originalMessage = err.shortMessage || err.message || "Unknown RPC Error";
-  const errorCode = err.code || "UNKNOWN_ERROR";
   
-  // Scrubber: Remove URL from message if present
+  // Secondary fallback: string scrubbing
   const safeMessage = originalMessage.replace(process.env.ALCHEMY_URL || "REST_API", "*****");
   
   console.error(`🌐 Blockchain RPC Error [${errorCode}]: ${safeMessage}`);
@@ -64,6 +71,7 @@ function handleRPCError(err) {
   let status = 502;
   let finalMessage = "Failed to communicate with Blockchain provider.";
 
+  // Map specific RPC issues to UX-friendly messages
   if (safeMessage.includes("429") || safeMessage.toLowerCase().includes("rate limit")) {
     finalMessage = "Blockchain RPC rate limit exceeded. Please try again later.";
     status = 429;
@@ -72,7 +80,7 @@ function handleRPCError(err) {
     status = 503;
   }
 
-  // 🛡️ Security: Throw a FRESH error object. DO NOT attach the original err object.
+  // 🛡️ Security: Throw a FRESH error object to break references to original leaky metadata
   const cleanError = new Error(finalMessage);
   cleanError.status = status;
   cleanError.code = errorCode; 
