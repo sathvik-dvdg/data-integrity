@@ -1,14 +1,25 @@
 const { ethers } = require("ethers");
 require("dotenv").config();
 
-// Initialize provider once
-const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_URL);
+let provider;
+
+try {
+  if (!process.env.ALCHEMY_URL) {
+    throw new Error("ALCHEMY_URL is not defined in environment variables.");
+  }
+  provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_URL);
+} catch (err) {
+  console.error("❌ Failed to initialize blockchain provider:", err.message);
+  // We don't exit here to allow the rest of the app to potentially load, 
+  // but routes will fail gracefully.
+}
 
 /**
  * Fetches the latest block from the blockchain
  * @returns {Promise<Object>}
  */
 async function getLatestBlock() {
+  if (!provider) throw new Error("Blockchain provider is not initialized.");
   try {
     const block = await provider.getBlock("latest");
     return block;
@@ -23,6 +34,7 @@ async function getLatestBlock() {
  * @returns {Promise<Object|null>}
  */
 async function getBlock(blockTag) {
+  if (!provider) throw new Error("Blockchain provider is not initialized.");
   try {
     const block = await provider.getBlock(blockTag);
     return block;
@@ -50,7 +62,7 @@ function handleRPCError(err) {
     throw error;
   }
 
-  throw err; // Generic catch-all
+  throw err; 
 }
 
 module.exports = { 
