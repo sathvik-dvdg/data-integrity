@@ -8,13 +8,21 @@ const usePolling = (callback, delay) => {
   }, [callback]);
 
   useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    
+    let timeoutId;
+
+    const poll = async () => {
+      if (savedCallback.current) {
+        await savedCallback.current();
+      }
+      
+      if (delay !== null) {
+        timeoutId = setTimeout(poll, delay);
+      }
+    };
+
     if (delay !== null) {
-      const id = setInterval(tick, delay);
-      return () => clearInterval(id);
+      timeoutId = setTimeout(poll, delay);
+      return () => clearTimeout(timeoutId);
     }
   }, [delay]);
 };

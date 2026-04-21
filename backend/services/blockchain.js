@@ -1,17 +1,19 @@
 const { ethers } = require("ethers");
 require("dotenv").config();
 
-let provider;
+let provider = null;
 
-try {
-  if (!process.env.ALCHEMY_URL) {
-    throw new Error("ALCHEMY_URL is not defined in environment variables.");
+/**
+ * Initializes the provider on demand. Useful if Alchemy is temporarily down at boot.
+ */
+function getProvider() {
+  if (!provider) {
+    if (!process.env.ALCHEMY_URL) {
+      throw new Error("ALCHEMY_URL is not defined in environment variables.");
+    }
+    provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_URL);
   }
-  provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_URL);
-} catch (err) {
-  console.error("❌ Failed to initialize blockchain provider:", err.message);
-  // We don't exit here to allow the rest of the app to potentially load, 
-  // but routes will fail gracefully.
+  return provider;
 }
 
 /**
@@ -19,9 +21,9 @@ try {
  * @returns {Promise<Object>}
  */
 async function getLatestBlock() {
-  if (!provider) throw new Error("Blockchain provider is not initialized.");
+  const p = getProvider();
   try {
-    const block = await provider.getBlock("latest");
+    const block = await p.getBlock("latest");
     return block;
   } catch (err) {
     handleRPCError(err);
@@ -34,9 +36,9 @@ async function getLatestBlock() {
  * @returns {Promise<Object|null>}
  */
 async function getBlock(blockTag) {
-  if (!provider) throw new Error("Blockchain provider is not initialized.");
+  const p = getProvider();
   try {
-    const block = await provider.getBlock(blockTag);
+    const block = await p.getBlock(blockTag);
     return block;
   } catch (err) {
     handleRPCError(err);
@@ -45,24 +47,29 @@ async function getBlock(blockTag) {
 
 /**
  * Maps RPC errors to more descriptive error messages and codes
+ * Sanitize error message to prevent leaking RPC URL
  * @param {Error} err 
  */
 function handleRPCError(err) {
-  console.error("🌐 Blockchain RPC Error:", err.message);
+  const safeMessage = err.message ? err.message.replace(process.env.ALCHEMY_URL || "REST_API", "*****") : "Unknown RPC Error";
+  console.error("🌐 Blockchain RPC Error:", safeMessage);
 
-  if (err.message.includes("429") || err.message.toLowerCase().includes("rate limit")) {
+  if (safeMessage.includes("429") || safeMessage.toLowerCase().includes("rate limit")) {
     const error = new Error("Blockchain RPC rate limit exceeded. Please try again later.");
     error.status = 429;
     throw error;
   }
 
-  if (err.message.includes("503") || err.message.toLowerCase().includes("timeout")) {
+  if (safeMessage.includes("503") || safeMessage.toLowerCase().includes("timeout")) {
     const error = new Error("Blockchain service is temporarily unavailable.");
     error.status = 503;
     throw error;
   }
 
-  throw err; 
+  // Generic fallback sanitize
+  const genericError = new Error("Failed to communicate with Blockchain provider.");
+  genericError.status = 502;
+  throw genericError;
 }
 
 module.exports = { 

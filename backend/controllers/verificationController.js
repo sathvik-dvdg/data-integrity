@@ -8,26 +8,14 @@ const MAX_BLOCK_DIGITS = 15;
 
 /**
  * Helper to transform objects containing BigInts into string-serializable versions
- * Ethers v6 block objects contain BigInts which break JSON.stringify
+ * Safely replaces BigInts without recursive infinite loop risks.
  * @param {Object} obj 
  * @returns {Object}
  */
 const serializeBigInts = (obj) => {
-  if (obj === null || obj === undefined) return obj;
-  
-  const newObj = Array.isArray(obj) ? [] : {};
-  
-  for (const key in obj) {
-    const value = obj[key];
-    if (typeof value === "bigint") {
-      newObj[key] = value.toString();
-    } else if (typeof value === "object") {
-      newObj[key] = serializeBigInts(value);
-    } else {
-      newObj[key] = value;
-    }
-  }
-  return newObj;
+  return JSON.parse(JSON.stringify(obj, (key, value) =>
+    typeof value === 'bigint' ? value.toString() : value
+  ));
 };
 
 /**
@@ -63,23 +51,35 @@ const verifyBlock = async (req, res, next) => {
     const actualBlockNumber = block.number.toString();
     const originalHash = block.hash;
     
-    // TODO: Simulation placeholder - implement actual re-computation logic here
-    const recomputedHash = block.hash; 
+    // MOCK: Simulation of hash computation mismatch based on 5% probability
+    const isMismatch = Math.random() < 0.05;
+    const recomputedHash = isMismatch ? "0x" + "0".repeat(64) : block.hash; 
 
     const status = originalHash === recomputedHash ? "MATCH" : "MISMATCH";
 
     // 💾 Save to DB - Ensure actual block height is stored, not "latest" string
-    const log = await VerificationLog.create({
-      blockNumber: actualBlockNumber,
-      blockHash: originalHash,
-      status,
-    });
-
-    console.log(`✅ Verification stored in DB for block ${actualBlockNumber}`);
+    let log;
+    try {
+      log = await VerificationLog.create({
+        blockNumber: actualBlockNumber,
+        blockHash: originalHash,
+        status,
+        isMock: true
+      });
+      console.log(`✅ Verification stored in DB for block ${actualBlockNumber}`);
+    } catch (dbErr) {
+      if (dbErr.code === 11000) {
+        // Block already verified. Fetch existing log gracefully.
+        console.log(`ℹ️ Block ${actualBlockNumber} already verified in DB.`);
+        log = await VerificationLog.findOne({ blockNumber: actualBlockNumber });
+      } else {
+        throw dbErr;
+      }
+    }
 
     res.json({
       message: "Verification complete",
-      data: serializeBigInts(log._doc || log), // Serialize BigInts in common fields if any
+      data: serializeBigInts(log._doc || log),
     });
 
   } catch (err) {
@@ -93,7 +93,6 @@ const verifyBlock = async (req, res, next) => {
 const getLatest = async (req, res, next) => {
   try {
     const block = await blockchainService.getLatestBlock();
-    // 🔥 Critical: Serialize BigInts before sending response
     res.json(serializeBigInts(block)); 
   } catch (err) {
     next(err);
@@ -101,35 +100,55 @@ const getLatest = async (req, res, next) => {
 };
 
 /**
- * Fetch all verification logs, sorted by newest first
+ * Fetch all verification logs, with pagination
  */
 const getLogs = async (req, res, next) => {
   try {
+    const page = Math.max(parseInt(req.query.page) || 1, 1);
     const limit = Math.min(parseInt(req.query.limit) || 50, 200);
-    const logs = await VerificationLog.find()
-      .sort({ checkedAt: -1 })
-      .limit(limit);
-    res.json({ data: logs });
+    const skip = (page - 1) * limit;
+
+    const [logs, total] = await Promise.all([
+      VerificationLog.find().sort({ checkedAt: -1 }).skip(skip).limit(limit),
+      VerificationLog.countDocuments()
+    ]);
+
+    res.json({ 
+      data: logs,
+      page,
+      limit,
+      total
+    });
   } catch (err) {
     next(err);
   }
 };
 
 /**
- * Get aggregated stats for the dashboard
+ * Get aggregated stats for the dashboard using optimized aggregation pipeline
  */
 const getStats = async (req, res, next) => {
   try {
-    const total = await VerificationLog.countDocuments();
-    const matchCount = await VerificationLog.countDocuments({ status: "MATCH" });
-    const mismatchCount = await VerificationLog.countDocuments({ status: "MISMATCH" });
-    const latest = await VerificationLog.findOne().sort({ checkedAt: -1 });
+    const statsResult = await VerificationLog.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: 1 },
+          matchCount: { $sum: { $cond: [{ $eq: ["$status", "MATCH"] }, 1, 0] } },
+          mismatchCount: { $sum: { $cond: [{ $eq: ["$status", "MISMATCH"] }, 1, 0] } }
+        }
+      }
+    ]);
+
+    const latest = await VerificationLog.findOne().sort({ checkedAt: -1 }).select("blockNumber checkedAt");
+
+    const stats = statsResult.length > 0 ? statsResult[0] : { total: 0, matchCount: 0, mismatchCount: 0 };
 
     res.json({
       data: {
-        total,
-        matchCount,
-        mismatchCount,
+        total: stats.total,
+        matchCount: stats.matchCount,
+        mismatchCount: stats.mismatchCount,
         latestBlock: latest ? latest.blockNumber : null,
         latestCheckedAt: latest ? latest.checkedAt : null,
       }

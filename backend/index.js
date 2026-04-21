@@ -65,6 +65,12 @@ app.use((err, req, res, next) => {
     if (!err.status) {
       response.message = "An unexpected error occurred.";
     }
+  } else {
+    // Optionally: if we don't want to leak internal info during manual hacking/spamming
+    // we can still suppress non-controlled error messages
+    if (!err.status) {
+       response.message = "An internal server error occurred.";
+    }
   }
 
   res.status(status).json(response);

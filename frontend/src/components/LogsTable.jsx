@@ -54,7 +54,7 @@ const LogsTable = ({ logs = [] }) => {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <StatusBadge status={log.status} />
+                    <StatusBadge status={log.status} isMock={log.isMock} />
                   </td>
                   <td className="px-6 py-4 text-sm text-[var(--color-text-secondary)] font-mono">
                     {formatTime(log.checkedAt)}
