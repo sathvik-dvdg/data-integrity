@@ -15,19 +15,20 @@ const Dashboard = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [errorToast, setErrorToast] = useState(null);
 
-  const fetchDashboardData = useCallback(async (showRefreshIndicator = false) => {
+  const fetchDashboardData = useCallback(async (showRefreshIndicator = false, signal = null) => {
     if (showRefreshIndicator) setIsRefreshing(true);
     try {
       const [logsRes, statsRes, latestRes] = await Promise.all([
-        getLogs(),
-        getStats(),
-        getLatestBlock()
+        getLogs(signal),
+        getStats(signal),
+        getLatestBlock(signal)
       ]);
       
       if (logsRes?.data) setLogs(logsRes.data);
       if (statsRes?.data) setStats(statsRes.data);
       if (latestRes) setIsConnected(true);
     } catch (error) {
+      if (error.name === 'CanceledError' || error.name === 'AbortError') return;
       console.error("Dashboard fetch error:", error);
       setIsConnected(false);
     } finally {
@@ -37,12 +38,14 @@ const Dashboard = () => {
 
   // Initial load
   useEffect(() => {
-    fetchDashboardData(true);
+    const controller = new AbortController();
+    fetchDashboardData(true, controller.signal);
+    return () => controller.abort();
   }, [fetchDashboardData]);
 
   // Auto-refresh every 5 seconds
-  usePolling(() => {
-    fetchDashboardData(false);
+  usePolling((signal) => {
+    fetchDashboardData(false, signal);
   }, 5000);
 
   const handleVerify = async (blockNumber) => {

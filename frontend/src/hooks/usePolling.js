@@ -8,22 +8,32 @@ const usePolling = (callback, delay) => {
   }, [callback]);
 
   useEffect(() => {
+    if (delay === null) return;
+
+    let controller = new AbortController();
     let timeoutId;
 
     const poll = async () => {
-      if (savedCallback.current) {
-        await savedCallback.current();
+      try {
+        if (savedCallback.current) {
+          await savedCallback.current(controller.signal);
+        }
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        console.error('Polling error:', err);
       }
       
-      if (delay !== null) {
+      if (delay !== null && !controller.signal.aborted) {
         timeoutId = setTimeout(poll, delay);
       }
     };
 
-    if (delay !== null) {
-      timeoutId = setTimeout(poll, delay);
-      return () => clearTimeout(timeoutId);
-    }
+    timeoutId = setTimeout(poll, delay);
+    
+    return () => {
+      controller.abort();
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [delay]);
 };
 

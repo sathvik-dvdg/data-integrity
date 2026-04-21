@@ -51,11 +51,15 @@ async function getBlock(blockTag) {
  * @param {Error} err 
  */
 function handleRPCError(err) {
-  // Extract just the core message
-  const originalMessage = err.message || "Unknown RPC Error";
+  // 🛡️ Security: Explicitly avoid logging the raw error object which contains sensitive URL data
+  // Extract info safely
+  const originalMessage = err.shortMessage || err.message || "Unknown RPC Error";
+  const errorCode = err.code || "UNKNOWN_ERROR";
+  
+  // Scrubber: Remove URL from message if present
   const safeMessage = originalMessage.replace(process.env.ALCHEMY_URL || "REST_API", "*****");
   
-  console.error("🌐 Blockchain RPC Error:", safeMessage);
+  console.error(`🌐 Blockchain RPC Error [${errorCode}]: ${safeMessage}`);
 
   let status = 502;
   let finalMessage = "Failed to communicate with Blockchain provider.";
@@ -68,9 +72,10 @@ function handleRPCError(err) {
     status = 503;
   }
 
-  // 🛡️ Security: Throw a fresh error object to strip any attached fields like err.config.url
+  // 🛡️ Security: Throw a FRESH error object. DO NOT attach the original err object.
   const cleanError = new Error(finalMessage);
   cleanError.status = status;
+  cleanError.code = errorCode; 
   throw cleanError;
 }
 

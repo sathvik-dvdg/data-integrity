@@ -10,6 +10,15 @@ requiredEnv.forEach((env) => {
   }
 });
 
+/**
+ * ⚡ Global Patch: BigInt Serialization
+ * Standard libraries (like Ethers.js) return BigInts, which JSON.stringify does not support by default.
+ * This patch ensures all BigInts are serialized as strings in API responses.
+ */
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
+
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");

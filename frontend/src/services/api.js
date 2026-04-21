@@ -15,9 +15,9 @@ API.interceptors.response.use(
   }
 );
 
-export const getLatestBlock = () => API.get("/block/latest");
-export const verifyBlock = (blockNumber) => API.get(`/verify/${blockNumber}`);
-export const getLogs = () => API.get("/logs");
-export const getStats = () => API.get("/stats");
+export const getLatestBlock = (signal) => API.get("/block/latest", { signal });
+export const verifyBlock = (blockNumber, signal) => API.get(`/verify/${blockNumber}`, { signal });
+export const getLogs = (signal) => API.get("/logs", { signal });
+export const getStats = (signal) => API.get("/stats", { signal });
 
 export default API;
