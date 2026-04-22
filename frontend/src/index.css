@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background-dim: #0b1326;
+  --color-surface-container-low: #131b2e;
+  --color-surface-container-high: #222a3d;
+  --color-primary-blue: #38bdf8;
+  --color-primary-blue-dim: #004965;
+  --color-success-green: #56e5a9;
+  --color-error-red: #ffb4ab;
+  --color-text-primary: #dae2fd;
+  --color-text-secondary: #87929a;
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--color-background-dim)] text-[var(--color-text-primary)] font-sans antialiased selection:bg-[var(--color-primary-blue-dim)] selection:text-white min-h-screen;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-[var(--color-surface-container-low)]/80 backdrop-blur-xl border border-[var(--color-text-primary)]/5 shadow-xl;
+  }
+
+  .primary-gradient-btn {
+    @apply bg-gradient-to-br from-[#8ed5ff] to-[#38bdf8] text-[#001e2c] font-semibold transition-all duration-300 hover:shadow-[0_0_20px_rgba(56,189,248,0.4)] disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .terminal-input {
+    @apply bg-black/40 border border-[#3e484f] text-[var(--color-text-primary)] rounded-md px-4 py-3 focus:outline-none focus:border-l-2 focus:border-l-[var(--color-primary-blue)] focus:border-y-[#3e484f] focus:border-r-[#3e484f] focus:bg-black/60 transition-all font-mono placeholder-[var(--color-text-secondary)]/50;
+  }
+}
+
+/* Custom Webkit Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background-dim);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-container-high);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}

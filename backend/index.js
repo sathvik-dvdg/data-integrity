@@ -12,112 +12,80 @@ requiredEnv.forEach((env) => {
 
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 const connectDB = require("./config/db");
-const { getLatestBlock } = require("./services/blockchain");
-const VerificationLog = require("./models/VerificationLog");
-const { ethers } = require("ethers");
+const verifyRoutes = require("./routes/verifyRoutes");
 
-const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_URL);
 const app = express();
 
-// 🔥 Middleware - MUST BE FIRST
+/**
+ * 🛡️ Global Security: Base Rate Limiter
+ * Provides a baseline protection against brute-force/DoS for all endpoints (including 404s).
+ * More restrictive limits are applied per-router.
+ */
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 mins
+  max: 500, // 500 requests per 15 min per IP
+  message: { error: "Too many requests. Please try again later." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(globalLimiter);
+
+// 🔥 Middleware
 app.use((req, res, next) => {
   const timestamp = new Date().toLocaleTimeString();
   console.log(`[${timestamp}] ➡️  ${req.method} ${req.url}`);
   next();
 });
 
-app.use(cors());
+// 🛡️ Security Headers
+app.use(helmet());
+
+// 🛡️ Restricted CORS Origin
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "http://localhost:3000"
+}));
+
 app.use(express.json());
 
 // 🔥 Connect to MongoDB
 connectDB();
 
-// 🔥 Routes
-
-// Home route
-app.get("/", (req, res) => {
-  res.send("API Running");
-});
-
-// Blockchain test route
-app.get("/block/latest", async (req, res, next) => {
-  try {
-    console.log("⏳ Fetching block from blockchain...");
-    const block = await getLatestBlock();
-    console.log("✅ Block fetched:", block.number);
-    res.json(block);
-  } catch (err) {
-    next(err); // Pass error to global handler
-  }
-});
-
-app.get("/verify/:blockNumber", async (req, res, next) => {
-  try {
-    const rawParam = req.params.blockNumber;
-    let blockNumber;
-
-    if (rawParam.toLowerCase() === "latest") {
-      blockNumber = "latest";
-    } else {
-      // Strict numeric validation
-      if (!/^\d+$/.test(rawParam)) {
-        return res.status(400).json({ error: "Invalid block number format. Please provide a positive integer." });
-      }
-      // Use BigInt for block numbers to prevent overflow (future-proofing)
-      blockNumber = BigInt(rawParam);
-    }
-
-    console.log("⏳ Verifying block:", blockNumber.toString());
-
-    const block = await provider.getBlock(blockNumber);
-
-    if (!block) {
-      return res.status(404).json({ error: "Block not found on the blockchain." });
-    }
-
-    const originalHash = block.hash;
-    const recomputedHash = block.hash; // Simulation placeholder
-    const status = originalHash === recomputedHash ? "MATCH" : "MISMATCH";
-
-    // 💾 Save to DB
-    const log = await VerificationLog.create({
-      blockNumber: blockNumber.toString(), // Store as string for consistency
-      blockHash: originalHash,
-      status,
-    });
-
-    console.log("✅ Stored in DB");
-
-    res.json({
-      message: "Verification complete",
-      data: log,
-    });
-
-  } catch (err) {
-    next(err); // Pass to global handler
-  }
-});
+// 🔥 Routes - Versioned
+app.use("/api/v1", verifyRoutes);
 
 // 404 Handler
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
 });
 
-// 🛡️ Global Error Handler - Masking details in production
+// 🛡️ Global Error Handler - Security Hardened
 app.use((err, req, res, next) => {
-  console.error("🔥 Global Error:", err.stack);
+  // Always log the full stack trace on the server for debugging
+  console.error("🔥 Global Error Handler:", err.stack);
+  
+  const status = err.status || 500;
   
   const response = {
-    error: "Internal Server Error"
+    error: status >= 500 ? "Internal Server Error" : "Request Error",
+    message: "An unexpected error occurred." // Default safe message
   };
 
-  // Only expose error details in development
+  // 🛡️ Security: Leak prevention
   if (process.env.NODE_ENV === "development") {
-    response.details = err.message;
+    response.message = err.message;
+    response.stack = err.stack;
+  } else {
+    // Whitelist specific "Safe" error messages even in production
+    const safeMessages = ["Block not found", "Route not found", "Blockchain service is temporarily unavailable"];
+    if (safeMessages.some(m => err.message?.includes(m))) {
+      response.message = err.message;
+    }
   }
 
-  res.status(500).json(response);
+  res.status(status).json(response);
 });
 
 // 🔥 Server start
@@ -125,4 +93,6 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  console.log(`🔗 Allowed CORS Origin: ${process.env.FRONTEND_URL || "http://localhost:3000"}`);
+  console.log(`🔒 API Prefix: /api/v1`);
 });
