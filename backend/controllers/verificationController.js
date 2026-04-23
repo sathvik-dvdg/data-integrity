@@ -7,7 +7,7 @@ const VerificationLog = require("../models/VerificationLog");
 const MAX_BLOCK_DIGITS = 15;
 
 /**
- * Local Helper: BigInt Serialization
+ * 🛠️ Local Helper: BigInt Serialization
  * Converts objects with BigInts into string versions before JSON response.
  */
 const sanitizeData = (data) => {
@@ -17,8 +17,8 @@ const sanitizeData = (data) => {
 };
 
 /**
- * Combined Dashboard Summary
- * Performance: Fetches counts, recent logs, and latest block in a single optimized pass.
+ * 📊 Dashboard Summary
+ * Fetches counts, recent logs, and latest blockchain state in one optimized pass.
  */
 const getDashboardSummary = async (req, res, next) => {
   try {
@@ -60,10 +60,10 @@ const getDashboardSummary = async (req, res, next) => {
         latestCheckedAt: latestVerified ? latestVerified.checkedAt : null,
       },
       recentLogs: facetData.recentLogs,
-      latestBlockchainBlock: {
+      latestBlockchainBlock: latestBlockchainBlock ? {
         number: latestBlockchainBlock.number,
         hash: latestBlockchainBlock.hash
-      }
+      } : null
     }));
   } catch (err) {
     next(err);
@@ -71,7 +71,8 @@ const getDashboardSummary = async (req, res, next) => {
 };
 
 /**
- * Controller for block verification logic
+ * 🛡️ Core Verification Logic
+ * Validates a block by comparing the blockchain's reported hash against a local standard.
  */
 const verifyBlock = async (req, res, next) => {
   try {
@@ -79,12 +80,12 @@ const verifyBlock = async (req, res, next) => {
     const force = req.query.force === "true"; // Forensic support: re-verify existing records
     let blockTag;
 
-    // 🛡️ Input Validation
+    // Input Validation
     if (rawParam.toLowerCase() === "latest") {
       blockTag = "latest";
     } else {
       if (!/^\d+$/.test(rawParam) || rawParam.length > MAX_BLOCK_DIGITS) {
-        return res.status(400).json({ 
+        return res.status(400).json({
           error: "Invalid block number format.",
           message: `Please provide a positive integer (max ${MAX_BLOCK_DIGITS} digits).`
         });
@@ -92,7 +93,7 @@ const verifyBlock = async (req, res, next) => {
       blockTag = BigInt(rawParam);
     }
 
-    // 🏎️ Fetch block first
+    // Fetch block from blockchain
     const block = await blockchainService.getBlock(blockTag);
 
     if (!block) {
@@ -101,11 +102,10 @@ const verifyBlock = async (req, res, next) => {
 
     const actualBlockNumber = Number(block.number);
 
-    // 🏁 Forensics Check: Allow re-verification if force parameter is present
+    // Return cached verification if not forced
     if (!force) {
       const existingLog = await VerificationLog.findOne({ blockNumber: actualBlockNumber });
       if (existingLog) {
-        console.log(`ℹ️ Returning cached verification for block ${actualBlockNumber}`);
         return res.json(sanitizeData({
           message: "Verification complete (Cached)",
           data: existingLog,
@@ -113,32 +113,33 @@ const verifyBlock = async (req, res, next) => {
       }
     }
 
-    console.log(`⏳ Verifying block: ${actualBlockNumber} (Force: ${force})`);
-    const originalHash = block.hash;
-    
+    // Cryptographic Comparison Logic
+    const remoteHash = block.hash;
+    let localData = block.hash;
+
     /**
-     * 🛡️ Tampering Simulation: Moved to Feature Flag
-     * Defaults to true in dev for demo purposes.
+     * 🛡️ Tampering Simulation
+     * Controlled via .env for forensic demonstration purposes.
      */
     const simulateTampering = process.env.SIMULATE_TAMPERING === 'true';
     const isMismatch = simulateTampering && (Math.random() < 0.05);
-    const recomputedHash = isMismatch ? "0x" + "0".repeat(64) : block.hash; 
+    if (isMismatch) {
+      localData = "0x" + "0".repeat(64);
+    }
 
-    const status = originalHash === recomputedHash ? "MATCH" : "MISMATCH";
+    const status = (remoteHash === localData) ? "MATCH" : "MISMATCH";
 
-    // 💾 Upsert to DB (handles both new and re-verifications)
+    // Upsert the verification record to the database
     const log = await VerificationLog.findOneAndUpdate(
       { blockNumber: actualBlockNumber },
       {
-        blockHash: originalHash,
+        blockHash: remoteHash,
         status,
         isMock: isMismatch,
         checkedAt: new Date()
       },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
-    
-    console.log(`✅ Verification updated for block ${actualBlockNumber} [${status}]`);
 
     res.json(sanitizeData({
       message: force ? "Re-verification complete (Forced)" : "Verification complete",
@@ -151,19 +152,8 @@ const verifyBlock = async (req, res, next) => {
 };
 
 /**
- * Simple controller to fetch latest block
- */
-const getLatest = async (req, res, next) => {
-  try {
-    const block = await blockchainService.getLatestBlock();
-    res.json(sanitizeData(block)); 
-  } catch (err) {
-    next(err);
-  }
-};
-
-/**
- * Fetch all verification logs, with pagination
+ * 📜 Fetch Paginated Logs
+ * Used for the History/Logs page to handle large datasets efficiently.
  */
 const getLogs = async (req, res, next) => {
   try {
@@ -176,7 +166,7 @@ const getLogs = async (req, res, next) => {
       VerificationLog.countDocuments()
     ]);
 
-    res.json(sanitizeData({ 
+    res.json(sanitizeData({
       data: logs,
       page,
       limit,
@@ -187,9 +177,41 @@ const getLogs = async (req, res, next) => {
   }
 };
 
+/**
+ * 🔍 Get Latest Block Info
+ * Simple fetch for real-time chain status updates.
+ */
+const getLatest = async (req, res, next) => {
+  try {
+    const block = await blockchainService.getLatestBlock();
+    res.json(sanitizeData(block));
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * 📥 Export Logs
+ * Generates a downloadable forensic report of all verification activity.
+ */
+const exportLogs = async (req, res, next) => {
+  try {
+    const logs = await VerificationLog.find().sort({ checkedAt: -1 });
+
+    // Set headers for file download
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', 'attachment; filename=blockchain_audit_report.json');
+
+    res.send(sanitizeData(logs));
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   verifyBlock,
   getLatest,
   getLogs,
   getDashboardSummary,
+  exportLogs
 };
