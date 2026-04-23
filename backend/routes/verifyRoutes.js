@@ -1,12 +1,33 @@
 const express = require("express");
+const rateLimit = require("express-rate-limit");
 const router = express.Router();
 const {
   verifyBlock,
   getLogs,
   getDashboardSummary,
   getLatest,
-  exportLogs // ⬅️ Successfully integrated from the controller
+  exportLogs
 } = require("../controllers/verificationController");
+
+const verificationLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  message: {
+    error: "Too many verification requests from this IP, please try again later."
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const exportLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: {
+    error: "Too many export requests from this IP, please try again later."
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 /**
  * 📊 Dashboard Stats and Summary
@@ -34,13 +55,13 @@ router.get("/block/latest", getLatest);
  * Route: GET /api/v1/export
  * Generates and triggers a JSON download of the entire database audit trail.
  */
-router.get("/export", exportLogs);
+router.get("/export", exportLimiter, exportLogs);
 
 /**
  * 🛡️ Manual Block Verification
  * Route: GET /api/v1/verify/:blockNumber
  * Triggers a manual integrity check for a specific block number or the keyword "latest".
  */
-router.get("/verify/:blockNumber", verifyBlock);
+router.get("/verify/:blockNumber", verificationLimiter, verifyBlock);
 
 module.exports = router;

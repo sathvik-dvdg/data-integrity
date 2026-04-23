@@ -1,6 +1,6 @@
 import React from 'react';
 import StatusBadge from './StatusBadge';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Loader2 } from 'lucide-react';
 
 const formatHash = (hash) => {
   if (!hash) return '';
@@ -13,12 +13,14 @@ const formatTime = (isoString) => {
   return date.toLocaleString();
 };
 
-const LogsTable = ({ logs = [] }) => {
+const LogsTable = ({ logs = [], isLoading = false }) => {
   return (
     <div className="glass-panel rounded-2xl overflow-hidden border border-white/5">
       <div className="p-6 border-b border-[var(--color-surface-container-high)] flex justify-between items-center">
         <h3 className="text-xl font-bold font-[Manrope] text-white">Verification Logs</h3>
-        <span className="text-sm font-mono text-[var(--color-text-secondary)]">{logs.length} Records</span>
+        <span className="text-sm font-mono text-[var(--color-text-secondary)]">
+          {isLoading ? 'Loading...' : `${logs.length} Records`}
+        </span>
       </div>
       
       <div className="overflow-x-auto">
@@ -33,7 +35,16 @@ const LogsTable = ({ logs = [] }) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--color-surface-container-high)]">
-            {logs.length === 0 ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan="5" className="px-6 py-12 text-center text-[var(--color-text-secondary)]">
+                  <div className="inline-flex items-center gap-3">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Loading verification history...
+                  </div>
+                </td>
+              </tr>
+            ) : logs.length === 0 ? (
               <tr>
                 <td colSpan="5" className="px-6 py-12 text-center text-[var(--color-text-secondary)]">
                   No verification records found.

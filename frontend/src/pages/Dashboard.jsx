@@ -9,24 +9,48 @@ import { getDashboardSummary, verifyBlock } from '../services/api';
 const Dashboard = () => {
   const [summary, setSummary] = useState(null);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState(null);
 
   // 🔄 Fetch initial data and set up polling
-  const loadDashboardData = async () => {
+  const loadDashboardData = async ({ showSpinner = false } = {}) => {
+    if (showSpinner) {
+      setIsRefreshing(true);
+    }
+
+    setError(null);
+
     try {
       const data = await getDashboardSummary();
       setSummary(data);
+      setIsConnected(Boolean(data?.latestBlockchainBlock));
+      setError(null);
     } catch (err) {
       console.error("Failed to fetch dashboard data:", err);
       setError("Unable to connect to the backend monitoring service.");
+      setIsConnected(false);
+    } finally {
+      if (showSpinner) {
+        setIsRefreshing(false);
+      }
     }
   };
 
   useEffect(() => {
-    loadDashboardData();
+    const initialLoadId = window.setTimeout(() => {
+      void loadDashboardData();
+    }, 0);
+
     // Poll every 10 seconds to catch updates from the 30-second auto-job
-    const interval = setInterval(loadDashboardData, 10000);
-    return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      void loadDashboardData();
+    }, 10000);
+
+    return () => {
+      window.clearTimeout(initialLoadId);
+      clearInterval(interval);
+    };
   }, []);
 
   const handleManualVerify = async (blockTag) => {
@@ -46,7 +70,12 @@ const Dashboard = () => {
     <div className="flex min-h-screen bg-[var(--color-bg-primary)]">
       <Sidebar activePage="dashboard" />
       <div className="flex-1 flex flex-col">
-        <Navbar title="Data Integrity Dashboard" />
+        <Navbar
+          title="Data Integrity Dashboard"
+          isConnected={isConnected}
+          isRefreshing={isRefreshing}
+          onRefresh={() => loadDashboardData({ showSpinner: true })}
+        />
 
         <main className="p-8 space-y-8 overflow-y-auto">
           {error && (
