@@ -1,4 +1,6 @@
+const { once } = require("events");
 const blockchainService = require("../services/blockchain");
+const { verifyBlockIntegrity } = require("../services/integrityVerifier");
 const VerificationLog = require("../models/VerificationLog");
 
 /**
@@ -12,9 +14,30 @@ const MAX_BLOCK_DIGITS = 15;
  */
 const sanitizeData = (data) => {
   return JSON.parse(JSON.stringify(data, (key, value) =>
-    typeof value === 'bigint' ? value.toString() : value
+    typeof value === "bigint" ? value.toString() : value
   ));
 };
+
+const buildSummaryAggregation = () => ([
+  {
+    $facet: {
+      stats: [
+        {
+          $group: {
+            _id: null,
+            total: { $sum: 1 },
+            matchCount: { $sum: { $cond: [{ $eq: ["$status", "MATCH"] }, 1, 0] } },
+            mismatchCount: { $sum: { $cond: [{ $eq: ["$status", "MISMATCH"] }, 1, 0] } }
+          }
+        }
+      ],
+      recentLogs: [
+        { $sort: { checkedAt: -1 } },
+        { $limit: 10 }
+      ]
+    }
+  }
+]);
 
 /**
  * 📊 Dashboard Summary
@@ -22,34 +45,25 @@ const sanitizeData = (data) => {
  */
 const getDashboardSummary = async (req, res, next) => {
   try {
-    const [summaryResult, latestBlockchainBlock] = await Promise.all([
-      // Aggregation handles multiple counts (stats) and recent logs in one $facet call
-      VerificationLog.aggregate([
-        {
-          $facet: {
-            stats: [
-              {
-                $group: {
-                  _id: null,
-                  total: { $sum: 1 },
-                  matchCount: { $sum: { $cond: [{ $eq: ["$status", "MATCH"] }, 1, 0] } },
-                  mismatchCount: { $sum: { $cond: [{ $eq: ["$status", "MISMATCH"] }, 1, 0] } }
-                }
-              }
-            ],
-            recentLogs: [
-              { $sort: { checkedAt: -1 } },
-              { $limit: 10 }
-            ]
-          }
-        }
-      ]),
+    const [summaryResult, latestBlockResult] = await Promise.allSettled([
+      VerificationLog.aggregate(buildSummaryAggregation()),
       blockchainService.getLatestBlock()
     ]);
 
-    const facetData = summaryResult[0];
+    if (summaryResult.status === "rejected") {
+      throw summaryResult.reason;
+    }
+
+    const facetData = summaryResult.value[0] || { stats: [], recentLogs: [] };
     const stats = facetData.stats[0] || { total: 0, matchCount: 0, mismatchCount: 0 };
     const latestVerified = facetData.recentLogs[0] || null;
+    const latestBlockchainBlock =
+      latestBlockResult.status === "fulfilled" && latestBlockResult.value
+        ? {
+            number: latestBlockResult.value.number,
+            hash: latestBlockResult.value.hash
+          }
+        : null;
 
     res.json(sanitizeData({
       stats: {
@@ -60,10 +74,7 @@ const getDashboardSummary = async (req, res, next) => {
         latestCheckedAt: latestVerified ? latestVerified.checkedAt : null,
       },
       recentLogs: facetData.recentLogs,
-      latestBlockchainBlock: latestBlockchainBlock ? {
-        number: latestBlockchainBlock.number,
-        hash: latestBlockchainBlock.hash
-      } : null
+      latestBlockchainBlock
     }));
   } catch (err) {
     next(err);
@@ -93,18 +104,26 @@ const verifyBlock = async (req, res, next) => {
       blockTag = BigInt(rawParam);
     }
 
-    // Fetch block from blockchain
-    const block = await blockchainService.getBlock(blockTag);
+    // Return cached verification if not forced
+    if (!force && blockTag !== "latest") {
+      const cachedLog = await VerificationLog.findOne({ blockNumber: Number(rawParam) }).lean();
+      if (cachedLog) {
+        return res.json(sanitizeData({
+          message: "Verification complete (Cached)",
+          data: cachedLog,
+        }));
+      }
+    }
 
-    if (!block) {
+    const verification = await verifyBlockIntegrity(blockTag);
+    if (!verification) {
       return res.status(404).json({ error: "Block not found on the blockchain." });
     }
 
-    const actualBlockNumber = Number(block.number);
+    const actualBlockNumber = Number(verification.block.number);
 
-    // Return cached verification if not forced
-    if (!force) {
-      const existingLog = await VerificationLog.findOne({ blockNumber: actualBlockNumber });
+    if (!force && blockTag === "latest") {
+      const existingLog = await VerificationLog.findOne({ blockNumber: actualBlockNumber }).lean();
       if (existingLog) {
         return res.json(sanitizeData({
           message: "Verification complete (Cached)",
@@ -113,32 +132,17 @@ const verifyBlock = async (req, res, next) => {
       }
     }
 
-    // Cryptographic Comparison Logic
-    const remoteHash = block.hash;
-    let localData = block.hash;
-
-    /**
-     * 🛡️ Tampering Simulation
-     * Controlled via .env for forensic demonstration purposes.
-     */
-    const simulateTampering = process.env.SIMULATE_TAMPERING === 'true';
-    const isMismatch = simulateTampering && (Math.random() < 0.05);
-    if (isMismatch) {
-      localData = "0x" + "0".repeat(64);
-    }
-
-    const status = (remoteHash === localData) ? "MATCH" : "MISMATCH";
-
-    // Upsert the verification record to the database
     const log = await VerificationLog.findOneAndUpdate(
       { blockNumber: actualBlockNumber },
       {
-        blockHash: remoteHash,
-        status,
-        isMock: isMismatch,
+        blockHash: verification.remoteHash,
+        computedHash: verification.computedHash,
+        status: verification.status,
+        verificationMethod: force ? "manual-forced" : "manual",
+        isMock: verification.isMock,
         checkedAt: new Date()
       },
-      { upsert: true, returnDocument: 'after' }
+      { upsert: true, new: true, setDefaultsOnInsert: true }
     );
 
     res.json(sanitizeData({
@@ -162,7 +166,7 @@ const getLogs = async (req, res, next) => {
     const skip = (page - 1) * limit;
 
     const [logs, total] = await Promise.all([
-      VerificationLog.find().sort({ checkedAt: -1 }).skip(skip).limit(limit),
+      VerificationLog.find().sort({ checkedAt: -1 }).skip(skip).limit(limit).lean(),
       VerificationLog.countDocuments()
     ]);
 
@@ -195,15 +199,49 @@ const getLatest = async (req, res, next) => {
  * Generates a downloadable forensic report of all verification activity.
  */
 const exportLogs = async (req, res, next) => {
+  let cursor;
+
   try {
-    const logs = await VerificationLog.find().sort({ checkedAt: -1 });
+    cursor = VerificationLog.find().sort({ checkedAt: -1 }).lean().cursor();
 
-    // Set headers for file download
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Content-Disposition', 'attachment; filename=blockchain_audit_report.json');
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.setHeader("Content-Disposition", "attachment; filename=blockchain_audit_report.json");
 
-    res.send(sanitizeData(logs));
+    let isFirstChunk = true;
+    const closeCursor = () => {
+      if (cursor) {
+        void cursor.close().catch(() => {});
+      }
+    };
+
+    req.on("close", closeCursor);
+    res.write("[");
+
+    for await (const log of cursor) {
+      const chunk = `${isFirstChunk ? "" : ","}${JSON.stringify(sanitizeData(log))}`;
+      if (!res.write(chunk)) {
+        await once(res, "drain");
+      }
+
+      isFirstChunk = false;
+    }
+
+    req.off("close", closeCursor);
+    res.end("]");
   } catch (err) {
+    if (cursor) {
+      try {
+        await cursor.close();
+      } catch (closeErr) {
+        console.error("Failed to close export cursor:", closeErr.message);
+      }
+    }
+
+    if (res.headersSent) {
+      res.destroy(err);
+      return;
+    }
+
     next(err);
   }
 };

@@ -11,15 +11,24 @@ const verificationSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    computedHash: {
+        type: String,
+        required: true,
+    },
     status: {
         type: String,
         enum: ["MATCH", "MISMATCH"],
         required: true,
         index: true,
     },
+    verificationMethod: {
+        type: String,
+        enum: ["auto", "manual", "manual-forced"],
+        default: "manual",
+    },
     isMock: {
         type: Boolean,
-        default: true,
+        default: false,
     },
     checkedAt: {
         type: Date,

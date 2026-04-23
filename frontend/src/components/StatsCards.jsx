@@ -43,8 +43,8 @@ const StatsCards = ({ stats }) => {
         valueColor={stats?.mismatchCount > 0 ? "text-[var(--color-error-red)]" : "text-white"}
       />
       <StatsCard 
-        title="Latest Block" 
-        value={stats?.latestBlock ? `#${stats.latestBlock}` : "N/A"} 
+        title="Latest Verified" 
+        value={stats?.latestVerifiedBlock ? `#${stats.latestVerifiedBlock}` : "N/A"} 
         icon={<Hash className="w-6 h-6" />} 
         valueColor="text-[#8ed5ff]"
       />

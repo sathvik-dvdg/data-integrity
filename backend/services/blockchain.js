@@ -46,6 +46,37 @@ async function getBlock(blockTag) {
 }
 
 /**
+ * Fetches a raw RPC block payload for low-level integrity verification.
+ * @param {string|number|BigInt} blockTag
+ * @returns {Promise<Object|null>}
+ */
+async function getRawBlock(blockTag) {
+  const p = getProvider();
+  try {
+    const rpcBlock = await p.send("eth_getBlockByNumber", [formatBlockTag(blockTag), false]);
+    return rpcBlock;
+  } catch (err) {
+    handleRPCError(err);
+  }
+}
+
+function formatBlockTag(blockTag) {
+  if (typeof blockTag === "string") {
+    if (["latest", "earliest", "pending", "safe", "finalized"].includes(blockTag)) {
+      return blockTag;
+    }
+
+    if (/^\d+$/.test(blockTag)) {
+      return ethers.toQuantity(BigInt(blockTag));
+    }
+
+    return blockTag;
+  }
+
+  return ethers.toQuantity(blockTag);
+}
+
+/**
  * Maps RPC errors to more descriptive error messages and codes
  * Sanitize error message to prevent leaking RPC URL
  * @param {Error} err 
@@ -83,11 +114,13 @@ function handleRPCError(err) {
   // 🛡️ Security: Throw a FRESH error object to break references to original leaky metadata
   const cleanError = new Error(finalMessage);
   cleanError.status = status;
-  cleanError.code = errorCode; 
+  cleanError.code = errorCode;
+  cleanError.exposeMessage = true;
   throw cleanError;
 }
 
 module.exports = { 
   getLatestBlock, 
-  getBlock 
+  getBlock,
+  getRawBlock
 };

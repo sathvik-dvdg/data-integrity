@@ -1,13 +1,18 @@
 import React from 'react';
 import { RefreshCw, ShieldCheck } from 'lucide-react';
 
-const Navbar = ({ isConnected, onRefresh, isRefreshing }) => {
+const Navbar = ({
+  title = 'Integrity Checker',
+  isConnected = false,
+  onRefresh,
+  isRefreshing = false
+}) => {
   return (
     <nav className="h-16 border-b border-[var(--color-surface-container-high)] bg-[var(--color-background-dim)]/80 backdrop-blur-md sticky top-0 z-50 flex items-center justify-between px-6">
       <div className="flex items-center gap-3">
         <ShieldCheck className="w-6 h-6 text-[var(--color-primary-blue)]" />
         <h1 className="text-xl font-bold tracking-tight text-white font-[Manrope]">
-          Integrity Checker
+          {title}
         </h1>
       </div>
       
@@ -23,6 +28,7 @@ const Navbar = ({ isConnected, onRefresh, isRefreshing }) => {
         
         <button 
           onClick={onRefresh}
+          disabled={!onRefresh || isRefreshing}
           className="text-[var(--color-text-secondary)] hover:text-white transition-colors p-2 hover:bg-[var(--color-surface-container-low)] rounded-full group"
         >
           <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin text-[var(--color-primary-blue)]' : ''}`} />
