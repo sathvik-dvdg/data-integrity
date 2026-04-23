@@ -1,32 +1,46 @@
 const express = require("express");
 const router = express.Router();
-const rateLimit = require("express-rate-limit");
-const verificationController = require("../controllers/verificationController");
+const {
+  verifyBlock,
+  getLogs,
+  getDashboardSummary,
+  getLatest,
+  exportLogs // ⬅️ Successfully integrated from the controller
+} = require("../controllers/verificationController");
 
-// 🛡️ Rate Limiter: limit each IP to 100 requests per 15 minutes
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: {
-    error: "Too many requests from this IP, please try again after 15 minutes"
-  },
-  standardHeaders: true, 
-  legacyHeaders: false, 
-});
+/**
+ * 📊 Dashboard Stats and Summary
+ * Route: GET /api/v1/summary
+ * Fetches total verification counts and a preview of the most recent activity.
+ */
+router.get("/summary", getDashboardSummary);
 
-// 🛡️ Apply rate limiter to ALL routes in this router
-router.use(limiter);
+/**
+ * 📜 Paginated Audit Logs
+ * Route: GET /api/v1/logs
+ * Retrieves the full verification history with support for pagination and limits.
+ */
+router.get("/logs", getLogs);
 
-// GET /summary - Consolidated dashboard data (stats + recent logs)
-router.get("/summary", verificationController.getDashboardSummary);
+/**
+ * 🔍 Direct Chain Status
+ * Route: GET /api/v1/block/latest
+ * Provides a snapshot of the current state of the blockchain from the RPC provider.
+ */
+router.get("/block/latest", getLatest);
 
-// GET /logs - Fetch all verification logs (paginated)
-router.get("/logs", verificationController.getLogs);
+/**
+ * 📥 Forensic Audit Export
+ * Route: GET /api/v1/export
+ * Generates and triggers a JSON download of the entire database audit trail.
+ */
+router.get("/export", exportLogs);
 
-// GET /block/latest
-router.get("/block/latest", verificationController.getLatest);
-
-// GET /verify/:blockNumber
-router.get("/verify/:blockNumber", verificationController.verifyBlock);
+/**
+ * 🛡️ Manual Block Verification
+ * Route: GET /api/v1/verify/:blockNumber
+ * Triggers a manual integrity check for a specific block number or the keyword "latest".
+ */
+router.get("/verify/:blockNumber", verifyBlock);
 
 module.exports = router;

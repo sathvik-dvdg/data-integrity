@@ -1,0 +1,913 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "backend\\index.js",
+      "source_location": "L1",
+      "id": "backend_index_js",
+      "community": 13,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "db.js",
+      "file_type": "code",
+      "source_file": "backend\\config\\db.js",
+      "source_location": "L1",
+      "id": "backend_config_db_js",
+      "community": 6,
+      "norm_label": "db.js"
+    },
+    {
+      "label": "connectDB()",
+      "file_type": "code",
+      "source_file": "backend\\config\\db.js",
+      "source_location": "L3",
+      "id": "db_connectdb",
+      "community": 6,
+      "norm_label": "connectdb()"
+    },
+    {
+      "label": "verificationController.js",
+      "file_type": "code",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L1",
+      "id": "backend_controllers_verificationcontroller_js",
+      "community": 0,
+      "norm_label": "verificationcontroller.js"
+    },
+    {
+      "label": "sanitizeData()",
+      "file_type": "code",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L13",
+      "id": "verificationcontroller_sanitizedata",
+      "community": 0,
+      "norm_label": "sanitizedata()"
+    },
+    {
+      "label": "getDashboardSummary()",
+      "file_type": "code",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L23",
+      "id": "verificationcontroller_getdashboardsummary",
+      "community": 0,
+      "norm_label": "getdashboardsummary()"
+    },
+    {
+      "label": "verifyBlock()",
+      "file_type": "code",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L76",
+      "id": "verificationcontroller_verifyblock",
+      "community": 0,
+      "norm_label": "verifyblock()"
+    },
+    {
+      "label": "getLatest()",
+      "file_type": "code",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L156",
+      "id": "verificationcontroller_getlatest",
+      "community": 0,
+      "norm_label": "getlatest()"
+    },
+    {
+      "label": "getLogs()",
+      "file_type": "code",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L168",
+      "id": "verificationcontroller_getlogs",
+      "community": 0,
+      "norm_label": "getlogs()"
+    },
+    {
+      "label": "VerificationLog.js",
+      "file_type": "code",
+      "source_file": "backend\\models\\VerificationLog.js",
+      "source_location": "L1",
+      "id": "backend_models_verificationlog_js",
+      "community": 14,
+      "norm_label": "verificationlog.js"
+    },
+    {
+      "label": "verifyRoutes.js",
+      "file_type": "code",
+      "source_file": "backend\\routes\\verifyRoutes.js",
+      "source_location": "L1",
+      "id": "backend_routes_verifyroutes_js",
+      "community": 15,
+      "norm_label": "verifyroutes.js"
+    },
+    {
+      "label": "blockchain.js",
+      "file_type": "code",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L1",
+      "id": "backend_services_blockchain_js",
+      "community": 1,
+      "norm_label": "blockchain.js"
+    },
+    {
+      "label": "getProvider()",
+      "file_type": "code",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L9",
+      "id": "blockchain_getprovider",
+      "community": 1,
+      "norm_label": "getprovider()"
+    },
+    {
+      "label": "getLatestBlock()",
+      "file_type": "code",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L23",
+      "id": "blockchain_getlatestblock",
+      "community": 1,
+      "norm_label": "getlatestblock()"
+    },
+    {
+      "label": "getBlock()",
+      "file_type": "code",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L38",
+      "id": "blockchain_getblock",
+      "community": 1,
+      "norm_label": "getblock()"
+    },
+    {
+      "label": "handleRPCError()",
+      "file_type": "code",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L53",
+      "id": "blockchain_handlerpcerror",
+      "community": 1,
+      "norm_label": "handlerpcerror()"
+    },
+    {
+      "label": "eslint.config.js",
+      "file_type": "code",
+      "source_file": "frontend\\eslint.config.js",
+      "source_location": "L1",
+      "id": "frontend_eslint_config_js",
+      "community": 16,
+      "norm_label": "eslint.config.js"
+    },
+    {
+      "label": "vite.config.js",
+      "file_type": "code",
+      "source_file": "frontend\\vite.config.js",
+      "source_location": "L1",
+      "id": "frontend_vite_config_js",
+      "community": 17,
+      "norm_label": "vite.config.js"
+    },
+    {
+      "label": "App.jsx",
+      "file_type": "code",
+      "source_file": "frontend\\src\\App.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_app_jsx",
+      "community": 7,
+      "norm_label": "app.jsx"
+    },
+    {
+      "label": "App()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\App.jsx",
+      "source_location": "L7",
+      "id": "app_app",
+      "community": 7,
+      "norm_label": "app()"
+    },
+    {
+      "label": "main.jsx",
+      "file_type": "code",
+      "source_file": "frontend\\src\\main.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_main_jsx",
+      "community": 18,
+      "norm_label": "main.jsx"
+    },
+    {
+      "label": "LogsTable.jsx",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\LogsTable.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_components_logstable_jsx",
+      "community": 2,
+      "norm_label": "logstable.jsx"
+    },
+    {
+      "label": "formatHash()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\LogsTable.jsx",
+      "source_location": "L5",
+      "id": "logstable_formathash",
+      "community": 2,
+      "norm_label": "formathash()"
+    },
+    {
+      "label": "formatTime()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\LogsTable.jsx",
+      "source_location": "L10",
+      "id": "logstable_formattime",
+      "community": 2,
+      "norm_label": "formattime()"
+    },
+    {
+      "label": "LogsTable()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\LogsTable.jsx",
+      "source_location": "L16",
+      "id": "logstable_logstable",
+      "community": 2,
+      "norm_label": "logstable()"
+    },
+    {
+      "label": "Navbar.jsx",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\Navbar.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_components_navbar_jsx",
+      "community": 8,
+      "norm_label": "navbar.jsx"
+    },
+    {
+      "label": "Navbar()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\Navbar.jsx",
+      "source_location": "L4",
+      "id": "navbar_navbar",
+      "community": 8,
+      "norm_label": "navbar()"
+    },
+    {
+      "label": "Sidebar.jsx",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\Sidebar.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_components_sidebar_jsx",
+      "community": 9,
+      "norm_label": "sidebar.jsx"
+    },
+    {
+      "label": "Sidebar()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\Sidebar.jsx",
+      "source_location": "L5",
+      "id": "sidebar_sidebar",
+      "community": 9,
+      "norm_label": "sidebar()"
+    },
+    {
+      "label": "StatsCards.jsx",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\StatsCards.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_components_statscards_jsx",
+      "community": 5,
+      "norm_label": "statscards.jsx"
+    },
+    {
+      "label": "StatsCard()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\StatsCards.jsx",
+      "source_location": "L4",
+      "id": "statscards_statscard",
+      "community": 5,
+      "norm_label": "statscard()"
+    },
+    {
+      "label": "StatsCards()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\StatsCards.jsx",
+      "source_location": "L25",
+      "id": "statscards_statscards",
+      "community": 5,
+      "norm_label": "statscards()"
+    },
+    {
+      "label": "StatusBadge.jsx",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\StatusBadge.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_components_statusbadge_jsx",
+      "community": 10,
+      "norm_label": "statusbadge.jsx"
+    },
+    {
+      "label": "StatusBadge()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\StatusBadge.jsx",
+      "source_location": "L3",
+      "id": "statusbadge_statusbadge",
+      "community": 10,
+      "norm_label": "statusbadge()"
+    },
+    {
+      "label": "VerifyPanel.jsx",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\VerifyPanel.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_components_verifypanel_jsx",
+      "community": 11,
+      "norm_label": "verifypanel.jsx"
+    },
+    {
+      "label": "VerifyPanel()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\components\\VerifyPanel.jsx",
+      "source_location": "L4",
+      "id": "verifypanel_verifypanel",
+      "community": 11,
+      "norm_label": "verifypanel()"
+    },
+    {
+      "label": "usePolling.js",
+      "file_type": "code",
+      "source_file": "frontend\\src\\hooks\\usePolling.js",
+      "source_location": "L1",
+      "id": "frontend_src_hooks_usepolling_js",
+      "community": 3,
+      "norm_label": "usepolling.js"
+    },
+    {
+      "label": "usePolling()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\hooks\\usePolling.js",
+      "source_location": "L3",
+      "id": "usepolling_usepolling",
+      "community": 3,
+      "norm_label": "usepolling()"
+    },
+    {
+      "label": "Dashboard.jsx",
+      "file_type": "code",
+      "source_file": "frontend\\src\\pages\\Dashboard.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_pages_dashboard_jsx",
+      "community": 3,
+      "norm_label": "dashboard.jsx"
+    },
+    {
+      "label": "Dashboard()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\pages\\Dashboard.jsx",
+      "source_location": "L10",
+      "id": "dashboard_dashboard",
+      "community": 3,
+      "norm_label": "dashboard()"
+    },
+    {
+      "label": "Logs.jsx",
+      "file_type": "code",
+      "source_file": "frontend\\src\\pages\\Logs.jsx",
+      "source_location": "L1",
+      "id": "frontend_src_pages_logs_jsx",
+      "community": 12,
+      "norm_label": "logs.jsx"
+    },
+    {
+      "label": "Logs()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\pages\\Logs.jsx",
+      "source_location": "L7",
+      "id": "logs_logs",
+      "community": 12,
+      "norm_label": "logs()"
+    },
+    {
+      "label": "api.js",
+      "file_type": "code",
+      "source_file": "frontend\\src\\services\\api.js",
+      "source_location": "L1",
+      "id": "frontend_src_services_api_js",
+      "community": 4,
+      "norm_label": "api.js"
+    },
+    {
+      "label": "getDashboardSummary()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\services\\api.js",
+      "source_location": "L18",
+      "id": "api_getdashboardsummary",
+      "community": 4,
+      "norm_label": "getdashboardsummary()"
+    },
+    {
+      "label": "getLatestBlock()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\services\\api.js",
+      "source_location": "L19",
+      "id": "api_getlatestblock",
+      "community": 0,
+      "norm_label": "getlatestblock()"
+    },
+    {
+      "label": "verifyBlock()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\services\\api.js",
+      "source_location": "L20",
+      "id": "api_verifyblock",
+      "community": 4,
+      "norm_label": "verifyblock()"
+    },
+    {
+      "label": "getLogs()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\services\\api.js",
+      "source_location": "L21",
+      "id": "api_getlogs",
+      "community": 4,
+      "norm_label": "getlogs()"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\config\\db.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "backend_config_db_js",
+      "_tgt": "db_connectdb",
+      "source": "backend_config_db_js",
+      "target": "db_connectdb",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "backend_controllers_verificationcontroller_js",
+      "_tgt": "verificationcontroller_sanitizedata",
+      "source": "backend_controllers_verificationcontroller_js",
+      "target": "verificationcontroller_sanitizedata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_src": "backend_controllers_verificationcontroller_js",
+      "_tgt": "verificationcontroller_getdashboardsummary",
+      "source": "backend_controllers_verificationcontroller_js",
+      "target": "verificationcontroller_getdashboardsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_src": "backend_controllers_verificationcontroller_js",
+      "_tgt": "verificationcontroller_verifyblock",
+      "source": "backend_controllers_verificationcontroller_js",
+      "target": "verificationcontroller_verifyblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L156",
+      "weight": 1.0,
+      "_src": "backend_controllers_verificationcontroller_js",
+      "_tgt": "verificationcontroller_getlatest",
+      "source": "backend_controllers_verificationcontroller_js",
+      "target": "verificationcontroller_getlatest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L168",
+      "weight": 1.0,
+      "_src": "backend_controllers_verificationcontroller_js",
+      "_tgt": "verificationcontroller_getlogs",
+      "source": "backend_controllers_verificationcontroller_js",
+      "target": "verificationcontroller_getlogs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_src": "verificationcontroller_getdashboardsummary",
+      "_tgt": "verificationcontroller_sanitizedata",
+      "source": "verificationcontroller_sanitizedata",
+      "target": "verificationcontroller_getdashboardsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L109",
+      "weight": 1.0,
+      "_src": "verificationcontroller_verifyblock",
+      "_tgt": "verificationcontroller_sanitizedata",
+      "source": "verificationcontroller_sanitizedata",
+      "target": "verificationcontroller_verifyblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L159",
+      "weight": 1.0,
+      "_src": "verificationcontroller_getlatest",
+      "_tgt": "verificationcontroller_sanitizedata",
+      "source": "verificationcontroller_sanitizedata",
+      "target": "verificationcontroller_getlatest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L179",
+      "weight": 1.0,
+      "_src": "verificationcontroller_getlogs",
+      "_tgt": "verificationcontroller_sanitizedata",
+      "source": "verificationcontroller_sanitizedata",
+      "target": "verificationcontroller_getlogs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_src": "verificationcontroller_getdashboardsummary",
+      "_tgt": "api_getlatestblock",
+      "source": "verificationcontroller_getdashboardsummary",
+      "target": "api_getlatestblock"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_src": "verificationcontroller_verifyblock",
+      "_tgt": "blockchain_getblock",
+      "source": "verificationcontroller_verifyblock",
+      "target": "blockchain_getblock"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L158",
+      "weight": 1.0,
+      "_src": "verificationcontroller_getlatest",
+      "_tgt": "api_getlatestblock",
+      "source": "verificationcontroller_getlatest",
+      "target": "api_getlatestblock"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_src": "backend_services_blockchain_js",
+      "_tgt": "blockchain_getprovider",
+      "source": "backend_services_blockchain_js",
+      "target": "blockchain_getprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_src": "backend_services_blockchain_js",
+      "_tgt": "blockchain_getlatestblock",
+      "source": "backend_services_blockchain_js",
+      "target": "blockchain_getlatestblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_src": "backend_services_blockchain_js",
+      "_tgt": "blockchain_getblock",
+      "source": "backend_services_blockchain_js",
+      "target": "blockchain_getblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_src": "backend_services_blockchain_js",
+      "_tgt": "blockchain_handlerpcerror",
+      "source": "backend_services_blockchain_js",
+      "target": "blockchain_handlerpcerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_src": "blockchain_getlatestblock",
+      "_tgt": "blockchain_getprovider",
+      "source": "blockchain_getprovider",
+      "target": "blockchain_getlatestblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_src": "blockchain_getblock",
+      "_tgt": "blockchain_getprovider",
+      "source": "blockchain_getprovider",
+      "target": "blockchain_getblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_src": "blockchain_getlatestblock",
+      "_tgt": "blockchain_getblock",
+      "source": "blockchain_getlatestblock",
+      "target": "blockchain_getblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_src": "blockchain_getlatestblock",
+      "_tgt": "blockchain_handlerpcerror",
+      "source": "blockchain_getlatestblock",
+      "target": "blockchain_handlerpcerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L44",
+      "weight": 1.0,
+      "_src": "blockchain_getblock",
+      "_tgt": "blockchain_handlerpcerror",
+      "source": "blockchain_getblock",
+      "target": "blockchain_handlerpcerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\App.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "frontend_src_app_jsx",
+      "_tgt": "app_app",
+      "source": "frontend_src_app_jsx",
+      "target": "app_app",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\components\\LogsTable.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "frontend_src_components_logstable_jsx",
+      "_tgt": "logstable_formathash",
+      "source": "frontend_src_components_logstable_jsx",
+      "target": "logstable_formathash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\components\\LogsTable.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "frontend_src_components_logstable_jsx",
+      "_tgt": "logstable_formattime",
+      "source": "frontend_src_components_logstable_jsx",
+      "target": "logstable_formattime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\components\\LogsTable.jsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_src": "frontend_src_components_logstable_jsx",
+      "_tgt": "logstable_logstable",
+      "source": "frontend_src_components_logstable_jsx",
+      "target": "logstable_logstable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\components\\Navbar.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "frontend_src_components_navbar_jsx",
+      "_tgt": "navbar_navbar",
+      "source": "frontend_src_components_navbar_jsx",
+      "target": "navbar_navbar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\components\\Sidebar.jsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "frontend_src_components_sidebar_jsx",
+      "_tgt": "sidebar_sidebar",
+      "source": "frontend_src_components_sidebar_jsx",
+      "target": "sidebar_sidebar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\components\\StatsCards.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "frontend_src_components_statscards_jsx",
+      "_tgt": "statscards_statscard",
+      "source": "frontend_src_components_statscards_jsx",
+      "target": "statscards_statscard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\components\\StatsCards.jsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_src": "frontend_src_components_statscards_jsx",
+      "_tgt": "statscards_statscards",
+      "source": "frontend_src_components_statscards_jsx",
+      "target": "statscards_statscards",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\components\\StatusBadge.jsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "frontend_src_components_statusbadge_jsx",
+      "_tgt": "statusbadge_statusbadge",
+      "source": "frontend_src_components_statusbadge_jsx",
+      "target": "statusbadge_statusbadge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\components\\VerifyPanel.jsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "frontend_src_components_verifypanel_jsx",
+      "_tgt": "verifypanel_verifypanel",
+      "source": "frontend_src_components_verifypanel_jsx",
+      "target": "verifypanel_verifypanel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\hooks\\usePolling.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "frontend_src_hooks_usepolling_js",
+      "_tgt": "usepolling_usepolling",
+      "source": "frontend_src_hooks_usepolling_js",
+      "target": "usepolling_usepolling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "frontend\\src\\pages\\Dashboard.jsx",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_src": "dashboard_dashboard",
+      "_tgt": "usepolling_usepolling",
+      "source": "usepolling_usepolling",
+      "target": "dashboard_dashboard"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\pages\\Dashboard.jsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "frontend_src_pages_dashboard_jsx",
+      "_tgt": "dashboard_dashboard",
+      "source": "frontend_src_pages_dashboard_jsx",
+      "target": "dashboard_dashboard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\pages\\Logs.jsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "frontend_src_pages_logs_jsx",
+      "_tgt": "logs_logs",
+      "source": "frontend_src_pages_logs_jsx",
+      "target": "logs_logs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\services\\api.js",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_src": "frontend_src_services_api_js",
+      "_tgt": "api_getdashboardsummary",
+      "source": "frontend_src_services_api_js",
+      "target": "api_getdashboardsummary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\services\\api.js",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_src": "frontend_src_services_api_js",
+      "_tgt": "api_getlatestblock",
+      "source": "frontend_src_services_api_js",
+      "target": "api_getlatestblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\services\\api.js",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_src": "frontend_src_services_api_js",
+      "_tgt": "api_verifyblock",
+      "source": "frontend_src_services_api_js",
+      "target": "api_verifyblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\services\\api.js",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_src": "frontend_src_services_api_js",
+      "_tgt": "api_getlogs",
+      "source": "frontend_src_services_api_js",
+      "target": "api_getlogs",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": []
+}

@@ -1,118 +1,74 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import StatsCards from '../components/StatsCards';
 import VerifyPanel from '../components/VerifyPanel';
 import LogsTable from '../components/LogsTable';
-import { getLogs, verifyBlock, getStats, getLatestBlock } from '../services/api';
-import usePolling from '../hooks/usePolling';
+import { getDashboardSummary, verifyBlock } from '../services/api';
 
 const Dashboard = () => {
-  const [logs, setLogs] = useState([]);
-  const [stats, setStats] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
+  const [summary, setSummary] = useState(null);
   const [isVerifying, setIsVerifying] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [errorToast, setErrorToast] = useState(null);
+  const [error, setError] = useState(null);
 
-  const fetchDashboardData = useCallback(async (showRefreshIndicator = false, signal = null) => {
-    if (showRefreshIndicator) setIsRefreshing(true);
+  // 🔄 Fetch initial data and set up polling
+  const loadDashboardData = async () => {
     try {
-      const response = await getDashboardSummary(signal);
-      
-      if (response?.data) {
-        const { stats, recentLogs, latestBlockchainBlock } = response.data;
-        setLogs(recentLogs || []);
-        setStats(stats || { total: 0, matchCount: 0, mismatchCount: 0 });
-        setIsConnected(!!latestBlockchainBlock);
-      }
-    } catch (error) {
-      if (error.name === 'CanceledError' || error.name === 'AbortError') return;
-      
-      console.error("Dashboard fetch error:", error);
-      setIsConnected(false);
-      
-      // Robust error rendering
-      const msg = error.response?.data?.message || error.message || "Failed to fetch dashboard data";
-      setErrorToast(typeof msg === 'string' ? msg : "An unexpected data error occurred");
-    } finally {
-      setIsRefreshing(false);
+      const data = await getDashboardSummary();
+      setSummary(data);
+    } catch (err) {
+      console.error("Failed to fetch dashboard data:", err);
+      setError("Unable to connect to the backend monitoring service.");
     }
+  };
+
+  useEffect(() => {
+    loadDashboardData();
+    // Poll every 10 seconds to catch updates from the 30-second auto-job
+    const interval = setInterval(loadDashboardData, 10000);
+    return () => clearInterval(interval);
   }, []);
 
-  // Initial load
-  useEffect(() => {
-    const controller = new AbortController();
-    fetchDashboardData(true, controller.signal);
-    return () => controller.abort();
-  }, [fetchDashboardData]);
-
-  // Auto-refresh every 5 seconds (Reduced from 3 requests to 1)
-  usePolling((signal) => {
-    fetchDashboardData(false, signal);
-  }, 5000);
-
-  const handleVerify = async (blockNumber) => {
+  const handleManualVerify = async (blockTag) => {
     setIsVerifying(true);
-    setErrorToast(null);
     try {
-      const { data: newLog } = await verifyBlock(blockNumber);
-      
-      // 🚀 Optimistic/Local State Update
-      setLogs(prev => {
-        // Prevent duplicates if by some chance it was already loaded
-        const filtered = prev.filter(l => l.blockNumber !== newLog.blockNumber);
-        return [newLog, ...filtered].slice(0, 100); 
-      });
-
-      setStats(prev => {
-        if (!prev) return null;
-        return {
-          ...prev,
-          total: prev.total + 1,
-          matchCount: newLog.status === "MATCH" ? prev.matchCount + 1 : prev.matchCount,
-          mismatchCount: newLog.status === "MISMATCH" ? prev.mismatchCount + 1 : prev.mismatchCount,
-          latestBlock: newLog.blockNumber,
-          latestCheckedAt: newLog.checkedAt
-        };
-      });
-
-    } catch (error) {
-      setErrorToast(error.message || "Failed to verify block. Please try again.");
-      setTimeout(() => setErrorToast(null), 5000);
+      await verifyBlock(blockTag);
+      // Refresh data immediately after a manual check
+      await loadDashboardData();
+    } catch (err) {
+      alert(err.response?.data?.message || "Verification failed");
     } finally {
       setIsVerifying(false);
     }
   };
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <Sidebar />
-      
-      <main className="flex-1 flex flex-col relative overflow-hidden bg-gradient-to-br from-[#0b1326] to-[#0d162a]">
-        <Navbar 
-          isConnected={isConnected} 
-          onRefresh={() => fetchDashboardData(true)} 
-          isRefreshing={isRefreshing} 
-        />
-        
-        <div className="flex-1 overflow-y-auto p-4 md:p-8">
-          <div className="max-w-7xl mx-auto space-y-6">
-            
-            {errorToast && (
-              <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl flex items-center justify-between shadow-lg">
-                <span className="font-semibold">{errorToast}</span>
-                <button onClick={() => setErrorToast(null)} className="opacity-70 hover:opacity-100">×</button>
-              </div>
-            )}
-            
-            <StatsCards stats={stats} />
-            <VerifyPanel onVerify={handleVerify} isVerifying={isVerifying} />
-            <LogsTable logs={logs} />
-            
+    <div className="flex min-h-screen bg-[var(--color-bg-primary)]">
+      <Sidebar activePage="dashboard" />
+      <div className="flex-1 flex flex-col">
+        <Navbar title="Data Integrity Dashboard" />
+
+        <main className="p-8 space-y-8 overflow-y-auto">
+          {error && (
+            <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-red-500 text-sm">
+              {error}
+            </div>
+          )}
+
+          {/* Core UI Components */}
+          <StatsCards stats={summary?.stats} />
+
+          <VerifyPanel
+            onVerify={handleManualVerify}
+            isVerifying={isVerifying}
+          />
+
+          <div className="glass-panel p-6 rounded-3xl">
+            <h3 className="text-xl font-semibold text-white mb-6">Recent Live Verifications</h3>
+            <LogsTable logs={summary?.recentLogs || []} />
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };
