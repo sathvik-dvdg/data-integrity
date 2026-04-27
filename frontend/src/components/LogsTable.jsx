@@ -3,7 +3,7 @@ import StatusBadge from './StatusBadge';
 import { ExternalLink, Loader2 } from 'lucide-react';
 
 const formatHash = (hash) => {
-  if (!hash) return '';
+  if (!hash) return 'Awaiting block hash';
   return `${hash.substring(0, 8)}...${hash.substring(hash.length - 6)}`;
 };
 
@@ -11,6 +11,21 @@ const formatTime = (isoString) => {
   if (!isoString) return '';
   const date = new Date(isoString);
   return date.toLocaleString();
+};
+
+const formatVerificationMethod = (method) => {
+  switch (method) {
+    case 'auto':
+      return 'Auto';
+    case 'manual':
+      return 'Manual';
+    case 'manual-forced':
+      return 'Manual Forced';
+    case 'user-request':
+      return 'User Request';
+    default:
+      return 'Unknown';
+  }
 };
 
 const LogsTable = ({ logs = [], isLoading = false }) => {
@@ -30,6 +45,7 @@ const LogsTable = ({ logs = [], isLoading = false }) => {
               <th className="px-6 py-4">Block #</th>
               <th className="px-6 py-4">Hash ID</th>
               <th className="px-6 py-4">Integrity Status</th>
+              <th className="px-6 py-4">Method</th>
               <th className="px-6 py-4">Timestamp</th>
               <th className="px-6 py-4 text-center">Action</th>
             </tr>
@@ -37,7 +53,7 @@ const LogsTable = ({ logs = [], isLoading = false }) => {
           <tbody className="divide-y divide-[var(--color-surface-container-high)]">
             {isLoading ? (
               <tr>
-                <td colSpan="5" className="px-6 py-12 text-center text-[var(--color-text-secondary)]">
+                <td colSpan="6" className="px-6 py-12 text-center text-[var(--color-text-secondary)]">
                   <div className="inline-flex items-center gap-3">
                     <Loader2 className="w-4 h-4 animate-spin" />
                     Loading verification history...
@@ -46,7 +62,7 @@ const LogsTable = ({ logs = [], isLoading = false }) => {
               </tr>
             ) : logs.length === 0 ? (
               <tr>
-                <td colSpan="5" className="px-6 py-12 text-center text-[var(--color-text-secondary)]">
+                <td colSpan="6" className="px-6 py-12 text-center text-[var(--color-text-secondary)]">
                   No verification records found.
                 </td>
               </tr>
@@ -66,6 +82,9 @@ const LogsTable = ({ logs = [], isLoading = false }) => {
                   </td>
                   <td className="px-6 py-4">
                     <StatusBadge status={log.status} isMock={log.isMock} />
+                  </td>
+                  <td className="px-6 py-4 text-sm text-[var(--color-text-secondary)]">
+                    {formatVerificationMethod(log.verificationMethod)}
                   </td>
                   <td className="px-6 py-4 text-sm text-[var(--color-text-secondary)] font-mono">
                     {formatTime(log.checkedAt)}

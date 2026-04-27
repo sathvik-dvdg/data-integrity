@@ -23,6 +23,7 @@ API.interceptors.response.use(
 export const getDashboardSummary = () => API.get("/summary");
 export const getLogs = (page = 1, limit = 50) => API.get(`/logs?page=${page}&limit=${limit}`);
 export const verifyBlock = (blockNumber) => API.get(`/verify/${blockNumber}`);
+export const requestVerification = (message) => API.post("/verify/request", { message });
 export const getLatestBlock = () => API.get("/block/latest");
 export const downloadAuditReport = () => API.get("/export", { responseType: "blob" });
 
