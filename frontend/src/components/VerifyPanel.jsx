@@ -1,68 +1,74 @@
 import React, { useState } from 'react';
-import { Search, Loader2, Zap } from 'lucide-react';
+import { Loader2, MessageSquareQuote } from 'lucide-react';
 
-const VerifyPanel = ({ onVerify, isVerifying }) => {
-  const [blockInput, setBlockInput] = useState('');
+const MESSAGE_HINT_SANITIZER = /[^A-Za-z0-9@.'_,:/()\- ]+/g;
+
+const sanitizeMessageHint = (value) => value
+  .replace(MESSAGE_HINT_SANITIZER, ' ')
+  .replace(/\s+/g, ' ')
+  .trimStart();
+
+const VerifyPanel = ({ onRequestVerification, isSubmitting, activePendingBlock }) => {
+  const [message, setMessage] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (blockInput.trim()) {
-      onVerify(blockInput.trim());
-    }
-  };
+    const trimmedMessage = message.trim();
 
-  const handleVerifyLatest = () => {
-    onVerify('latest');
+    if (trimmedMessage) {
+      Promise.resolve(onRequestVerification(trimmedMessage))
+        .then(() => setMessage(''))
+        .catch(() => {});
+    }
   };
 
   return (
     <div className="glass-panel p-8 rounded-3xl mb-8 relative border-t border-l border-[var(--color-primary-blue)]/10 shadow-2xl">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-2xl font-[Manrope] font-semibold text-white mb-6">
-          Forensic Block Insight
+          Queue a Verification Request
         </h2>
 
         <form onSubmit={handleSubmit} className="relative flex flex-col md:flex-row items-center gap-4">
           <div className="relative flex-grow w-full">
             <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-[var(--color-text-secondary)]">
-              <Search className="w-5 h-5" />
+              <MessageSquareQuote className="w-5 h-5" />
             </div>
             <input
               type="text"
               className="w-full terminal-input pl-12 pr-4 h-14 text-lg"
-              placeholder="Enter Block Number..."
-              value={blockInput}
-              onChange={(e) => setBlockInput(e.target.value)}
-              disabled={isVerifying}
+              placeholder="Add a short message for the next verification block..."
+              value={message}
+              maxLength={160}
+              onChange={(e) => setMessage(sanitizeMessageHint(e.target.value))}
+              disabled={isSubmitting}
             />
           </div>
           <button
             type="submit"
-            disabled={!blockInput.trim() || isVerifying}
-            className="primary-gradient-btn h-14 px-8 rounded-xl flex items-center justify-center min-w-[120px] w-full md:w-auto"
+            disabled={!message.trim() || isSubmitting}
+            className="primary-gradient-btn h-14 px-8 rounded-xl flex items-center justify-center min-w-[220px] w-full md:w-auto"
           >
-            {isVerifying ? <Loader2 className="animate-spin" /> : 'Verify'}
+            {isSubmitting ? <Loader2 className="animate-spin" /> : 'Submit for Verification'}
           </button>
         </form>
 
-        <div className="flex flex-col items-center mt-6">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="h-px w-12 bg-white/10"></div>
-            <span className="text-xs uppercase tracking-widest text-[var(--color-text-secondary)]">Or</span>
-            <div className="h-px w-12 bg-white/10"></div>
+        <div className="mt-6 p-4 rounded-2xl bg-white/5 border border-white/10 text-left">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <p className="text-sm text-white font-medium">Next target block</p>
+              <p className="text-xs text-[var(--color-text-secondary)] mt-1">
+                We create a signed pending log for the next block and finalize it once the chain advances.
+              </p>
+            </div>
+            <div className="px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm font-mono">
+              {activePendingBlock ? `Watching #${activePendingBlock}` : 'No active pending request'}
+            </div>
           </div>
-          <button
-            onClick={handleVerifyLatest}
-            disabled={isVerifying}
-            className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-[var(--color-primary-blue)]/20 transition-all text-sm text-white"
-          >
-            <Zap className="w-4 h-4 text-[var(--color-primary-blue)]" />
-            Verify Latest Block
-          </button>
         </div>
 
         <p className="text-center text-xs text-[var(--color-text-secondary)] mt-6 font-mono opacity-60">
-          Continuous cryptographic monitoring active
+          Allowed input: letters, numbers, spaces, and basic punctuation like `@ . ' - _ / ( )`.
         </p>
       </div>
     </div>

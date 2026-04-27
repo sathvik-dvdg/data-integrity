@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, CheckCircle, XCircle, Hash } from 'lucide-react';
+import { Activity, CheckCircle, Clock3, Hash, XCircle } from 'lucide-react';
 
 const StatsCard = ({ title, value, icon, valueColor = "text-white" }) => (
   <div className="glass-panel p-6 rounded-2xl relative overflow-hidden group">
@@ -24,7 +24,7 @@ const StatsCard = ({ title, value, icon, valueColor = "text-white" }) => (
 
 const StatsCards = ({ stats }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 mb-8">
       <StatsCard 
         title="Total Verifications" 
         value={stats?.total} 
@@ -41,6 +41,12 @@ const StatsCards = ({ stats }) => {
         value={stats?.mismatchCount} 
         icon={<XCircle className="w-6 h-6" />} 
         valueColor={stats?.mismatchCount > 0 ? "text-[var(--color-error-red)]" : "text-white"}
+      />
+      <StatsCard 
+        title="Pending Verification" 
+        value={stats?.pendingCount} 
+        icon={<Clock3 className="w-6 h-6" />} 
+        valueColor={stats?.pendingCount > 0 ? "text-amber-300" : "text-white"}
       />
       <StatsCard 
         title="Latest Verified" 

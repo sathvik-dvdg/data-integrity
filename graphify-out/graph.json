@@ -9,8 +9,26 @@
       "source_file": "backend\\index.js",
       "source_location": "L1",
       "id": "backend_index_js",
-      "community": 13,
+      "community": 3,
       "norm_label": "index.js"
+    },
+    {
+      "label": "origin()",
+      "file_type": "code",
+      "source_file": "backend\\index.js",
+      "source_location": "L71",
+      "id": "index_origin",
+      "community": 3,
+      "norm_label": "origin()"
+    },
+    {
+      "label": "startServer()",
+      "file_type": "code",
+      "source_file": "backend\\index.js",
+      "source_location": "L95",
+      "id": "index_startserver",
+      "community": 3,
+      "norm_label": "startserver()"
     },
     {
       "label": "db.js",
@@ -18,7 +36,7 @@
       "source_file": "backend\\config\\db.js",
       "source_location": "L1",
       "id": "backend_config_db_js",
-      "community": 6,
+      "community": 3,
       "norm_label": "db.js"
     },
     {
@@ -27,7 +45,7 @@
       "source_file": "backend\\config\\db.js",
       "source_location": "L3",
       "id": "db_connectdb",
-      "community": 6,
+      "community": 3,
       "norm_label": "connectdb()"
     },
     {
@@ -40,19 +58,46 @@
       "norm_label": "verificationcontroller.js"
     },
     {
-      "label": "sanitizeData()",
+      "label": "isPlainObject()",
       "file_type": "code",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L13",
-      "id": "verificationcontroller_sanitizedata",
+      "source_location": "L8",
+      "id": "verificationcontroller_isplainobject",
       "community": 0,
-      "norm_label": "sanitizedata()"
+      "norm_label": "isplainobject()"
+    },
+    {
+      "label": "mapBigInts()",
+      "file_type": "code",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L10",
+      "id": "verificationcontroller_mapbigints",
+      "community": 0,
+      "norm_label": "mapbigints()"
+    },
+    {
+      "label": "getValidCachedLog()",
+      "file_type": "code",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L53",
+      "id": "verificationcontroller_getvalidcachedlog",
+      "community": 0,
+      "norm_label": "getvalidcachedlog()"
+    },
+    {
+      "label": "buildSummaryAggregation()",
+      "file_type": "code",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L67",
+      "id": "verificationcontroller_buildsummaryaggregation",
+      "community": 0,
+      "norm_label": "buildsummaryaggregation()"
     },
     {
       "label": "getDashboardSummary()",
       "file_type": "code",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L23",
+      "source_location": "L88",
       "id": "verificationcontroller_getdashboardsummary",
       "community": 0,
       "norm_label": "getdashboardsummary()"
@@ -61,28 +106,55 @@
       "label": "verifyBlock()",
       "file_type": "code",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L76",
+      "source_location": "L126",
       "id": "verificationcontroller_verifyblock",
       "community": 0,
       "norm_label": "verifyblock()"
     },
     {
+      "label": "getLogs()",
+      "file_type": "code",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L200",
+      "id": "verificationcontroller_getlogs",
+      "community": 0,
+      "norm_label": "getlogs()"
+    },
+    {
       "label": "getLatest()",
       "file_type": "code",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L156",
+      "source_location": "L222",
       "id": "verificationcontroller_getlatest",
       "community": 0,
       "norm_label": "getlatest()"
     },
     {
-      "label": "getLogs()",
+      "label": "exportLogs()",
       "file_type": "code",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L168",
-      "id": "verificationcontroller_getlogs",
+      "source_location": "L231",
+      "id": "verificationcontroller_exportlogs",
       "community": 0,
-      "norm_label": "getlogs()"
+      "norm_label": "exportlogs()"
+    },
+    {
+      "label": "autoVerify.js",
+      "file_type": "code",
+      "source_file": "backend\\jobs\\autoVerify.js",
+      "source_location": "L1",
+      "id": "backend_jobs_autoverify_js",
+      "community": 3,
+      "norm_label": "autoverify.js"
+    },
+    {
+      "label": "startAutoVerify()",
+      "file_type": "code",
+      "source_file": "backend\\jobs\\autoVerify.js",
+      "source_location": "L10",
+      "id": "autoverify_startautoverify",
+      "community": 3,
+      "norm_label": "startautoverify()"
     },
     {
       "label": "VerificationLog.js",
@@ -112,19 +184,37 @@
       "norm_label": "blockchain.js"
     },
     {
+      "label": "createProvider()",
+      "file_type": "code",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L7",
+      "id": "blockchain_createprovider",
+      "community": 1,
+      "norm_label": "createprovider()"
+    },
+    {
       "label": "getProvider()",
       "file_type": "code",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L9",
+      "source_location": "L19",
       "id": "blockchain_getprovider",
       "community": 1,
       "norm_label": "getprovider()"
     },
     {
+      "label": "getBackupProvider()",
+      "file_type": "code",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L27",
+      "id": "blockchain_getbackupprovider",
+      "community": 1,
+      "norm_label": "getbackupprovider()"
+    },
+    {
       "label": "getLatestBlock()",
       "file_type": "code",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L23",
+      "source_location": "L39",
       "id": "blockchain_getlatestblock",
       "community": 1,
       "norm_label": "getlatestblock()"
@@ -133,19 +223,127 @@
       "label": "getBlock()",
       "file_type": "code",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L38",
+      "source_location": "L54",
       "id": "blockchain_getblock",
       "community": 1,
       "norm_label": "getblock()"
     },
     {
+      "label": "getRawBlock()",
+      "file_type": "code",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L69",
+      "id": "blockchain_getrawblock",
+      "community": 1,
+      "norm_label": "getrawblock()"
+    },
+    {
+      "label": "getBackupBlockHash()",
+      "file_type": "code",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L84",
+      "id": "blockchain_getbackupblockhash",
+      "community": 1,
+      "norm_label": "getbackupblockhash()"
+    },
+    {
+      "label": "formatBlockTag()",
+      "file_type": "code",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L95",
+      "id": "blockchain_formatblocktag",
+      "community": 1,
+      "norm_label": "formatblocktag()"
+    },
+    {
       "label": "handleRPCError()",
       "file_type": "code",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L53",
+      "source_location": "L115",
       "id": "blockchain_handlerpcerror",
       "community": 1,
       "norm_label": "handlerpcerror()"
+    },
+    {
+      "label": "integrityVerifier.js",
+      "file_type": "code",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L1",
+      "id": "backend_services_integrityverifier_js",
+      "community": 2,
+      "norm_label": "integrityverifier.js"
+    },
+    {
+      "label": "quantityToBytes()",
+      "file_type": "code",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L10",
+      "id": "integrityverifier_quantitytobytes",
+      "community": 2,
+      "norm_label": "quantitytobytes()"
+    },
+    {
+      "label": "hexToBytes()",
+      "file_type": "code",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L19",
+      "id": "integrityverifier_hextobytes",
+      "community": 2,
+      "norm_label": "hextobytes()"
+    },
+    {
+      "label": "ensureField()",
+      "file_type": "code",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L27",
+      "id": "integrityverifier_ensurefield",
+      "community": 2,
+      "norm_label": "ensurefield()"
+    },
+    {
+      "label": "normalizeBlockNumber()",
+      "file_type": "code",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L38",
+      "id": "integrityverifier_normalizeblocknumber",
+      "community": 2,
+      "norm_label": "normalizeblocknumber()"
+    },
+    {
+      "label": "resolveHeaderEra()",
+      "file_type": "code",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L43",
+      "id": "integrityverifier_resolveheaderera",
+      "community": 2,
+      "norm_label": "resolveheaderera()"
+    },
+    {
+      "label": "buildBlockHeader()",
+      "file_type": "code",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L75",
+      "id": "integrityverifier_buildblockheader",
+      "community": 2,
+      "norm_label": "buildblockheader()"
+    },
+    {
+      "label": "recomputeBlockHash()",
+      "file_type": "code",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L121",
+      "id": "integrityverifier_recomputeblockhash",
+      "community": 2,
+      "norm_label": "recomputeblockhash()"
+    },
+    {
+      "label": "verifyBlockIntegrity()",
+      "file_type": "code",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L124",
+      "id": "integrityverifier_verifyblockintegrity",
+      "community": 1,
+      "norm_label": "verifyblockintegrity()"
     },
     {
       "label": "eslint.config.js",
@@ -171,7 +369,7 @@
       "source_file": "frontend\\src\\App.jsx",
       "source_location": "L1",
       "id": "frontend_src_app_jsx",
-      "community": 7,
+      "community": 8,
       "norm_label": "app.jsx"
     },
     {
@@ -180,7 +378,7 @@
       "source_file": "frontend\\src\\App.jsx",
       "source_location": "L7",
       "id": "app_app",
-      "community": 7,
+      "community": 8,
       "norm_label": "app()"
     },
     {
@@ -198,7 +396,7 @@
       "source_file": "frontend\\src\\components\\LogsTable.jsx",
       "source_location": "L1",
       "id": "frontend_src_components_logstable_jsx",
-      "community": 2,
+      "community": 5,
       "norm_label": "logstable.jsx"
     },
     {
@@ -207,7 +405,7 @@
       "source_file": "frontend\\src\\components\\LogsTable.jsx",
       "source_location": "L5",
       "id": "logstable_formathash",
-      "community": 2,
+      "community": 5,
       "norm_label": "formathash()"
     },
     {
@@ -216,7 +414,7 @@
       "source_file": "frontend\\src\\components\\LogsTable.jsx",
       "source_location": "L10",
       "id": "logstable_formattime",
-      "community": 2,
+      "community": 5,
       "norm_label": "formattime()"
     },
     {
@@ -225,7 +423,7 @@
       "source_file": "frontend\\src\\components\\LogsTable.jsx",
       "source_location": "L16",
       "id": "logstable_logstable",
-      "community": 2,
+      "community": 5,
       "norm_label": "logstable()"
     },
     {
@@ -234,7 +432,7 @@
       "source_file": "frontend\\src\\components\\Navbar.jsx",
       "source_location": "L1",
       "id": "frontend_src_components_navbar_jsx",
-      "community": 8,
+      "community": 9,
       "norm_label": "navbar.jsx"
     },
     {
@@ -243,7 +441,7 @@
       "source_file": "frontend\\src\\components\\Navbar.jsx",
       "source_location": "L4",
       "id": "navbar_navbar",
-      "community": 8,
+      "community": 9,
       "norm_label": "navbar()"
     },
     {
@@ -252,7 +450,7 @@
       "source_file": "frontend\\src\\components\\Sidebar.jsx",
       "source_location": "L1",
       "id": "frontend_src_components_sidebar_jsx",
-      "community": 9,
+      "community": 10,
       "norm_label": "sidebar.jsx"
     },
     {
@@ -261,7 +459,7 @@
       "source_file": "frontend\\src\\components\\Sidebar.jsx",
       "source_location": "L5",
       "id": "sidebar_sidebar",
-      "community": 9,
+      "community": 10,
       "norm_label": "sidebar()"
     },
     {
@@ -270,7 +468,7 @@
       "source_file": "frontend\\src\\components\\StatsCards.jsx",
       "source_location": "L1",
       "id": "frontend_src_components_statscards_jsx",
-      "community": 5,
+      "community": 7,
       "norm_label": "statscards.jsx"
     },
     {
@@ -279,7 +477,7 @@
       "source_file": "frontend\\src\\components\\StatsCards.jsx",
       "source_location": "L4",
       "id": "statscards_statscard",
-      "community": 5,
+      "community": 7,
       "norm_label": "statscard()"
     },
     {
@@ -288,7 +486,7 @@
       "source_file": "frontend\\src\\components\\StatsCards.jsx",
       "source_location": "L25",
       "id": "statscards_statscards",
-      "community": 5,
+      "community": 7,
       "norm_label": "statscards()"
     },
     {
@@ -297,7 +495,7 @@
       "source_file": "frontend\\src\\components\\StatusBadge.jsx",
       "source_location": "L1",
       "id": "frontend_src_components_statusbadge_jsx",
-      "community": 10,
+      "community": 11,
       "norm_label": "statusbadge.jsx"
     },
     {
@@ -306,7 +504,7 @@
       "source_file": "frontend\\src\\components\\StatusBadge.jsx",
       "source_location": "L3",
       "id": "statusbadge_statusbadge",
-      "community": 10,
+      "community": 11,
       "norm_label": "statusbadge()"
     },
     {
@@ -315,7 +513,7 @@
       "source_file": "frontend\\src\\components\\VerifyPanel.jsx",
       "source_location": "L1",
       "id": "frontend_src_components_verifypanel_jsx",
-      "community": 11,
+      "community": 12,
       "norm_label": "verifypanel.jsx"
     },
     {
@@ -324,7 +522,7 @@
       "source_file": "frontend\\src\\components\\VerifyPanel.jsx",
       "source_location": "L4",
       "id": "verifypanel_verifypanel",
-      "community": 11,
+      "community": 12,
       "norm_label": "verifypanel()"
     },
     {
@@ -333,7 +531,7 @@
       "source_file": "frontend\\src\\hooks\\usePolling.js",
       "source_location": "L1",
       "id": "frontend_src_hooks_usepolling_js",
-      "community": 3,
+      "community": 6,
       "norm_label": "usepolling.js"
     },
     {
@@ -342,7 +540,7 @@
       "source_file": "frontend\\src\\hooks\\usePolling.js",
       "source_location": "L3",
       "id": "usepolling_usepolling",
-      "community": 3,
+      "community": 6,
       "norm_label": "usepolling()"
     },
     {
@@ -351,16 +549,16 @@
       "source_file": "frontend\\src\\pages\\Dashboard.jsx",
       "source_location": "L1",
       "id": "frontend_src_pages_dashboard_jsx",
-      "community": 3,
+      "community": 6,
       "norm_label": "dashboard.jsx"
     },
     {
       "label": "Dashboard()",
       "file_type": "code",
       "source_file": "frontend\\src\\pages\\Dashboard.jsx",
-      "source_location": "L10",
+      "source_location": "L9",
       "id": "dashboard_dashboard",
-      "community": 3,
+      "community": 6,
       "norm_label": "dashboard()"
     },
     {
@@ -369,16 +567,16 @@
       "source_file": "frontend\\src\\pages\\Logs.jsx",
       "source_location": "L1",
       "id": "frontend_src_pages_logs_jsx",
-      "community": 12,
+      "community": 13,
       "norm_label": "logs.jsx"
     },
     {
       "label": "Logs()",
       "file_type": "code",
       "source_file": "frontend\\src\\pages\\Logs.jsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "id": "logs_logs",
-      "community": 12,
+      "community": 13,
       "norm_label": "logs()"
     },
     {
@@ -394,40 +592,97 @@
       "label": "getDashboardSummary()",
       "file_type": "code",
       "source_file": "frontend\\src\\services\\api.js",
-      "source_location": "L18",
+      "source_location": "L23",
       "id": "api_getdashboardsummary",
       "community": 4,
       "norm_label": "getdashboardsummary()"
     },
     {
-      "label": "getLatestBlock()",
+      "label": "getLogs()",
       "file_type": "code",
       "source_file": "frontend\\src\\services\\api.js",
-      "source_location": "L19",
-      "id": "api_getlatestblock",
-      "community": 0,
-      "norm_label": "getlatestblock()"
+      "source_location": "L24",
+      "id": "api_getlogs",
+      "community": 4,
+      "norm_label": "getlogs()"
     },
     {
       "label": "verifyBlock()",
       "file_type": "code",
       "source_file": "frontend\\src\\services\\api.js",
-      "source_location": "L20",
+      "source_location": "L25",
       "id": "api_verifyblock",
       "community": 4,
       "norm_label": "verifyblock()"
     },
     {
-      "label": "getLogs()",
+      "label": "getLatestBlock()",
       "file_type": "code",
       "source_file": "frontend\\src\\services\\api.js",
-      "source_location": "L21",
-      "id": "api_getlogs",
+      "source_location": "L26",
+      "id": "api_getlatestblock",
+      "community": 0,
+      "norm_label": "getlatestblock()"
+    },
+    {
+      "label": "downloadAuditReport()",
+      "file_type": "code",
+      "source_file": "frontend\\src\\services\\api.js",
+      "source_location": "L27",
+      "id": "api_downloadauditreport",
       "community": 4,
-      "norm_label": "getlogs()"
+      "norm_label": "downloadauditreport()"
     }
   ],
   "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\index.js",
+      "source_location": "L71",
+      "weight": 1.0,
+      "_src": "backend_index_js",
+      "_tgt": "index_origin",
+      "source": "backend_index_js",
+      "target": "index_origin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\index.js",
+      "source_location": "L95",
+      "weight": 1.0,
+      "_src": "backend_index_js",
+      "_tgt": "index_startserver",
+      "source": "backend_index_js",
+      "target": "index_startserver",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "backend\\index.js",
+      "source_location": "L97",
+      "weight": 1.0,
+      "_src": "index_startserver",
+      "_tgt": "db_connectdb",
+      "source": "index_startserver",
+      "target": "db_connectdb"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "backend\\index.js",
+      "source_location": "L100",
+      "weight": 1.0,
+      "_src": "index_startserver",
+      "_tgt": "autoverify_startautoverify",
+      "source": "index_startserver",
+      "target": "autoverify_startautoverify"
+    },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
@@ -444,19 +699,55 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L13",
+      "source_location": "L8",
       "weight": 1.0,
       "_src": "backend_controllers_verificationcontroller_js",
-      "_tgt": "verificationcontroller_sanitizedata",
+      "_tgt": "verificationcontroller_isplainobject",
       "source": "backend_controllers_verificationcontroller_js",
-      "target": "verificationcontroller_sanitizedata",
+      "target": "verificationcontroller_isplainobject",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L23",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "backend_controllers_verificationcontroller_js",
+      "_tgt": "verificationcontroller_mapbigints",
+      "source": "backend_controllers_verificationcontroller_js",
+      "target": "verificationcontroller_mapbigints",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_src": "backend_controllers_verificationcontroller_js",
+      "_tgt": "verificationcontroller_getvalidcachedlog",
+      "source": "backend_controllers_verificationcontroller_js",
+      "target": "verificationcontroller_getvalidcachedlog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L67",
+      "weight": 1.0,
+      "_src": "backend_controllers_verificationcontroller_js",
+      "_tgt": "verificationcontroller_buildsummaryaggregation",
+      "source": "backend_controllers_verificationcontroller_js",
+      "target": "verificationcontroller_buildsummaryaggregation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L88",
       "weight": 1.0,
       "_src": "backend_controllers_verificationcontroller_js",
       "_tgt": "verificationcontroller_getdashboardsummary",
@@ -468,7 +759,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L76",
+      "source_location": "L126",
       "weight": 1.0,
       "_src": "backend_controllers_verificationcontroller_js",
       "_tgt": "verificationcontroller_verifyblock",
@@ -480,7 +771,19 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L156",
+      "source_location": "L200",
+      "weight": 1.0,
+      "_src": "backend_controllers_verificationcontroller_js",
+      "_tgt": "verificationcontroller_getlogs",
+      "source": "backend_controllers_verificationcontroller_js",
+      "target": "verificationcontroller_getlogs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L222",
       "weight": 1.0,
       "_src": "backend_controllers_verificationcontroller_js",
       "_tgt": "verificationcontroller_getlatest",
@@ -492,23 +795,35 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L168",
+      "source_location": "L231",
       "weight": 1.0,
       "_src": "backend_controllers_verificationcontroller_js",
-      "_tgt": "verificationcontroller_getlogs",
+      "_tgt": "verificationcontroller_exportlogs",
       "source": "backend_controllers_verificationcontroller_js",
-      "target": "verificationcontroller_getlogs",
+      "target": "verificationcontroller_exportlogs",
       "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L54",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_src": "verificationcontroller_mapbigints",
+      "_tgt": "verificationcontroller_isplainobject",
+      "source": "verificationcontroller_isplainobject",
+      "target": "verificationcontroller_mapbigints",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L110",
       "weight": 1.0,
       "_src": "verificationcontroller_getdashboardsummary",
-      "_tgt": "verificationcontroller_sanitizedata",
-      "source": "verificationcontroller_sanitizedata",
+      "_tgt": "verificationcontroller_mapbigints",
+      "source": "verificationcontroller_mapbigints",
       "target": "verificationcontroller_getdashboardsummary",
       "confidence_score": 1.0
     },
@@ -516,11 +831,11 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L109",
+      "source_location": "L148",
       "weight": 1.0,
       "_src": "verificationcontroller_verifyblock",
-      "_tgt": "verificationcontroller_sanitizedata",
-      "source": "verificationcontroller_sanitizedata",
+      "_tgt": "verificationcontroller_mapbigints",
+      "source": "verificationcontroller_mapbigints",
       "target": "verificationcontroller_verifyblock",
       "confidence_score": 1.0
     },
@@ -528,11 +843,23 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L159",
+      "source_location": "L211",
+      "weight": 1.0,
+      "_src": "verificationcontroller_getlogs",
+      "_tgt": "verificationcontroller_mapbigints",
+      "source": "verificationcontroller_mapbigints",
+      "target": "verificationcontroller_getlogs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L225",
       "weight": 1.0,
       "_src": "verificationcontroller_getlatest",
-      "_tgt": "verificationcontroller_sanitizedata",
-      "source": "verificationcontroller_sanitizedata",
+      "_tgt": "verificationcontroller_mapbigints",
+      "source": "verificationcontroller_mapbigints",
       "target": "verificationcontroller_getlatest",
       "confidence_score": 1.0
     },
@@ -540,12 +867,36 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend\\controllers\\verificationController.js",
-      "source_location": "L179",
+      "source_location": "L251",
       "weight": 1.0,
-      "_src": "verificationcontroller_getlogs",
-      "_tgt": "verificationcontroller_sanitizedata",
-      "source": "verificationcontroller_sanitizedata",
-      "target": "verificationcontroller_getlogs",
+      "_src": "verificationcontroller_exportlogs",
+      "_tgt": "verificationcontroller_mapbigints",
+      "source": "verificationcontroller_mapbigints",
+      "target": "verificationcontroller_exportlogs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_src": "verificationcontroller_verifyblock",
+      "_tgt": "verificationcontroller_getvalidcachedlog",
+      "source": "verificationcontroller_getvalidcachedlog",
+      "target": "verificationcontroller_verifyblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_src": "verificationcontroller_getdashboardsummary",
+      "_tgt": "verificationcontroller_buildsummaryaggregation",
+      "source": "verificationcontroller_buildsummaryaggregation",
+      "target": "verificationcontroller_getdashboardsummary",
       "confidence_score": 1.0
     },
     {
@@ -559,6 +910,18 @@
       "_tgt": "api_getlatestblock",
       "source": "verificationcontroller_getdashboardsummary",
       "target": "api_getlatestblock"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "backend\\controllers\\verificationController.js",
+      "source_location": "L155",
+      "weight": 1.0,
+      "_src": "verificationcontroller_verifyblock",
+      "_tgt": "integrityverifier_verifyblockintegrity",
+      "source": "verificationcontroller_verifyblock",
+      "target": "integrityverifier_verifyblockintegrity"
     },
     {
       "relation": "calls",
@@ -587,8 +950,32 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "backend\\jobs\\autoVerify.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "backend_jobs_autoverify_js",
+      "_tgt": "autoverify_startautoverify",
+      "source": "backend_jobs_autoverify_js",
+      "target": "autoverify_startautoverify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L9",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "backend_services_blockchain_js",
+      "_tgt": "blockchain_createprovider",
+      "source": "backend_services_blockchain_js",
+      "target": "blockchain_createprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L19",
       "weight": 1.0,
       "_src": "backend_services_blockchain_js",
       "_tgt": "blockchain_getprovider",
@@ -600,7 +987,19 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L23",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_src": "backend_services_blockchain_js",
+      "_tgt": "blockchain_getbackupprovider",
+      "source": "backend_services_blockchain_js",
+      "target": "blockchain_getbackupprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L39",
       "weight": 1.0,
       "_src": "backend_services_blockchain_js",
       "_tgt": "blockchain_getlatestblock",
@@ -612,7 +1011,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L38",
+      "source_location": "L54",
       "weight": 1.0,
       "_src": "backend_services_blockchain_js",
       "_tgt": "blockchain_getblock",
@@ -624,7 +1023,43 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L53",
+      "source_location": "L69",
+      "weight": 1.0,
+      "_src": "backend_services_blockchain_js",
+      "_tgt": "blockchain_getrawblock",
+      "source": "backend_services_blockchain_js",
+      "target": "blockchain_getrawblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L84",
+      "weight": 1.0,
+      "_src": "backend_services_blockchain_js",
+      "_tgt": "blockchain_getbackupblockhash",
+      "source": "backend_services_blockchain_js",
+      "target": "blockchain_getbackupblockhash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L95",
+      "weight": 1.0,
+      "_src": "backend_services_blockchain_js",
+      "_tgt": "blockchain_formatblocktag",
+      "source": "backend_services_blockchain_js",
+      "target": "blockchain_formatblocktag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L115",
       "weight": 1.0,
       "_src": "backend_services_blockchain_js",
       "_tgt": "blockchain_handlerpcerror",
@@ -636,7 +1071,31 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L24",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_src": "blockchain_getprovider",
+      "_tgt": "blockchain_createprovider",
+      "source": "blockchain_createprovider",
+      "target": "blockchain_getprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_src": "blockchain_getbackupprovider",
+      "_tgt": "blockchain_createprovider",
+      "source": "blockchain_createprovider",
+      "target": "blockchain_getbackupprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L40",
       "weight": 1.0,
       "_src": "blockchain_getlatestblock",
       "_tgt": "blockchain_getprovider",
@@ -648,7 +1107,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L39",
+      "source_location": "L55",
       "weight": 1.0,
       "_src": "blockchain_getblock",
       "_tgt": "blockchain_getprovider",
@@ -660,7 +1119,31 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L26",
+      "source_location": "L70",
+      "weight": 1.0,
+      "_src": "blockchain_getrawblock",
+      "_tgt": "blockchain_getprovider",
+      "source": "blockchain_getprovider",
+      "target": "blockchain_getrawblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L85",
+      "weight": 1.0,
+      "_src": "blockchain_getbackupblockhash",
+      "_tgt": "blockchain_getbackupprovider",
+      "source": "blockchain_getbackupprovider",
+      "target": "blockchain_getbackupblockhash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L43",
       "weight": 1.0,
       "_src": "blockchain_getlatestblock",
       "_tgt": "blockchain_getblock",
@@ -672,7 +1155,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L29",
+      "source_location": "L45",
       "weight": 1.0,
       "_src": "blockchain_getlatestblock",
       "_tgt": "blockchain_handlerpcerror",
@@ -684,12 +1167,276 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "backend\\services\\blockchain.js",
-      "source_location": "L44",
+      "source_location": "L60",
       "weight": 1.0,
       "_src": "blockchain_getblock",
       "_tgt": "blockchain_handlerpcerror",
       "source": "blockchain_getblock",
       "target": "blockchain_handlerpcerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L88",
+      "weight": 1.0,
+      "_src": "blockchain_getbackupblockhash",
+      "_tgt": "blockchain_getblock",
+      "source": "blockchain_getblock",
+      "target": "blockchain_getbackupblockhash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L126",
+      "weight": 1.0,
+      "_src": "integrityverifier_verifyblockintegrity",
+      "_tgt": "blockchain_getblock",
+      "source": "blockchain_getblock",
+      "target": "integrityverifier_verifyblockintegrity"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L73",
+      "weight": 1.0,
+      "_src": "blockchain_getrawblock",
+      "_tgt": "blockchain_formatblocktag",
+      "source": "blockchain_getrawblock",
+      "target": "blockchain_formatblocktag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L75",
+      "weight": 1.0,
+      "_src": "blockchain_getrawblock",
+      "_tgt": "blockchain_handlerpcerror",
+      "source": "blockchain_getrawblock",
+      "target": "blockchain_handlerpcerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L156",
+      "weight": 1.0,
+      "_src": "integrityverifier_verifyblockintegrity",
+      "_tgt": "blockchain_getrawblock",
+      "source": "blockchain_getrawblock",
+      "target": "integrityverifier_verifyblockintegrity"
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\blockchain.js",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_src": "blockchain_getbackupblockhash",
+      "_tgt": "blockchain_handlerpcerror",
+      "source": "blockchain_getbackupblockhash",
+      "target": "blockchain_handlerpcerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L127",
+      "weight": 1.0,
+      "_src": "integrityverifier_verifyblockintegrity",
+      "_tgt": "blockchain_getbackupblockhash",
+      "source": "blockchain_getbackupblockhash",
+      "target": "integrityverifier_verifyblockintegrity"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "backend_services_integrityverifier_js",
+      "_tgt": "integrityverifier_quantitytobytes",
+      "source": "backend_services_integrityverifier_js",
+      "target": "integrityverifier_quantitytobytes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_src": "backend_services_integrityverifier_js",
+      "_tgt": "integrityverifier_hextobytes",
+      "source": "backend_services_integrityverifier_js",
+      "target": "integrityverifier_hextobytes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_src": "backend_services_integrityverifier_js",
+      "_tgt": "integrityverifier_ensurefield",
+      "source": "backend_services_integrityverifier_js",
+      "target": "integrityverifier_ensurefield",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_src": "backend_services_integrityverifier_js",
+      "_tgt": "integrityverifier_normalizeblocknumber",
+      "source": "backend_services_integrityverifier_js",
+      "target": "integrityverifier_normalizeblocknumber",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_src": "backend_services_integrityverifier_js",
+      "_tgt": "integrityverifier_resolveheaderera",
+      "source": "backend_services_integrityverifier_js",
+      "target": "integrityverifier_resolveheaderera",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L75",
+      "weight": 1.0,
+      "_src": "backend_services_integrityverifier_js",
+      "_tgt": "integrityverifier_buildblockheader",
+      "source": "backend_services_integrityverifier_js",
+      "target": "integrityverifier_buildblockheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L121",
+      "weight": 1.0,
+      "_src": "backend_services_integrityverifier_js",
+      "_tgt": "integrityverifier_recomputeblockhash",
+      "source": "backend_services_integrityverifier_js",
+      "target": "integrityverifier_recomputeblockhash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L124",
+      "weight": 1.0,
+      "_src": "backend_services_integrityverifier_js",
+      "_tgt": "integrityverifier_verifyblockintegrity",
+      "source": "backend_services_integrityverifier_js",
+      "target": "integrityverifier_verifyblockintegrity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L88",
+      "weight": 1.0,
+      "_src": "integrityverifier_buildblockheader",
+      "_tgt": "integrityverifier_quantitytobytes",
+      "source": "integrityverifier_quantitytobytes",
+      "target": "integrityverifier_buildblockheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_src": "integrityverifier_buildblockheader",
+      "_tgt": "integrityverifier_hextobytes",
+      "source": "integrityverifier_hextobytes",
+      "target": "integrityverifier_buildblockheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_src": "integrityverifier_buildblockheader",
+      "_tgt": "integrityverifier_ensurefield",
+      "source": "integrityverifier_ensurefield",
+      "target": "integrityverifier_buildblockheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_src": "integrityverifier_buildblockheader",
+      "_tgt": "integrityverifier_normalizeblocknumber",
+      "source": "integrityverifier_normalizeblocknumber",
+      "target": "integrityverifier_buildblockheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L77",
+      "weight": 1.0,
+      "_src": "integrityverifier_buildblockheader",
+      "_tgt": "integrityverifier_resolveheaderera",
+      "source": "integrityverifier_resolveheaderera",
+      "target": "integrityverifier_buildblockheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L122",
+      "weight": 1.0,
+      "_src": "integrityverifier_recomputeblockhash",
+      "_tgt": "integrityverifier_buildblockheader",
+      "source": "integrityverifier_buildblockheader",
+      "target": "integrityverifier_recomputeblockhash",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "backend\\services\\integrityVerifier.js",
+      "source_location": "L166",
+      "weight": 1.0,
+      "_src": "integrityverifier_verifyblockintegrity",
+      "_tgt": "integrityverifier_recomputeblockhash",
+      "source": "integrityverifier_recomputeblockhash",
+      "target": "integrityverifier_verifyblockintegrity",
       "confidence_score": 1.0
     },
     {
@@ -831,8 +1578,8 @@
       "source_file": "frontend\\src\\pages\\Dashboard.jsx",
       "source_location": "L51",
       "weight": 1.0,
-      "_src": "dashboard_dashboard",
-      "_tgt": "usepolling_usepolling",
+      "_src": "usepolling_usepolling",
+      "_tgt": "dashboard_dashboard",
       "source": "usepolling_usepolling",
       "target": "dashboard_dashboard"
     },
@@ -840,7 +1587,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend\\src\\pages\\Dashboard.jsx",
-      "source_location": "L10",
+      "source_location": "L9",
       "weight": 1.0,
       "_src": "frontend_src_pages_dashboard_jsx",
       "_tgt": "dashboard_dashboard",
@@ -852,7 +1599,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend\\src\\pages\\Logs.jsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_src": "frontend_src_pages_logs_jsx",
       "_tgt": "logs_logs",
@@ -864,7 +1611,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend\\src\\services\\api.js",
-      "source_location": "L18",
+      "source_location": "L23",
       "weight": 1.0,
       "_src": "frontend_src_services_api_js",
       "_tgt": "api_getdashboardsummary",
@@ -876,19 +1623,19 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend\\src\\services\\api.js",
-      "source_location": "L19",
+      "source_location": "L24",
       "weight": 1.0,
       "_src": "frontend_src_services_api_js",
-      "_tgt": "api_getlatestblock",
+      "_tgt": "api_getlogs",
       "source": "frontend_src_services_api_js",
-      "target": "api_getlatestblock",
+      "target": "api_getlogs",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend\\src\\services\\api.js",
-      "source_location": "L20",
+      "source_location": "L25",
       "weight": 1.0,
       "_src": "frontend_src_services_api_js",
       "_tgt": "api_verifyblock",
@@ -900,12 +1647,24 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend\\src\\services\\api.js",
-      "source_location": "L21",
+      "source_location": "L26",
       "weight": 1.0,
       "_src": "frontend_src_services_api_js",
-      "_tgt": "api_getlogs",
+      "_tgt": "api_getlatestblock",
       "source": "frontend_src_services_api_js",
-      "target": "api_getlogs",
+      "target": "api_getlatestblock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend\\src\\services\\api.js",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_src": "frontend_src_services_api_js",
+      "_tgt": "api_downloadauditreport",
+      "source": "frontend_src_services_api_js",
+      "target": "api_downloadauditreport",
       "confidence_score": 1.0
     }
   ],
